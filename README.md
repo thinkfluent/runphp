@@ -2,6 +2,8 @@
 
 The `thinkfluent/runphp` toolkit enables rapid application development and serverless hosting on [Google Cloud Run](https://cloud.google.com/run).
 
+Base docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
+
 ## Getting Started
 
 ### The Vanilla Build
