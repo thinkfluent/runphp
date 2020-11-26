@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+# Put the standard php.ini in place
+cp -p "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+# Add our production etc
+cp -p /runphp-foundation/etc/production/php-conf.d/* "$PHP_INI_DIR/conf.d/"
+
+# Remove dev settings
+rm -f "$PHP_INI_DIR/conf.d/runphp-development-*.ini"

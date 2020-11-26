@@ -1,0 +1,23 @@
+#!/bin/sh
+set -e
+
+# Set the mode
+if [ "${RUNPHP_MODE}" = 'development' ]; then
+  echo "Starting in development mode"
+  . runphp-set-mode-development
+else
+  # assume production by default
+  echo "Starting in production mode"
+  . runphp-set-mode-production
+fi
+
+# Evaluate composer, decide what extensions are not enabled
+[ -d "${RUNPHP_COMPOSER_PATH}" ] && php /runphp-foundation/bin/startup-extension-check.php
+
+# Evaluate if we're in Google Cloud, and record in the environment
+RUNPHP_GOOGLE_CLOUD="$(php /runphp-foundation/bin/startup-check-google-cloud.php)"
+export RUNPHP_GOOGLE_CLOUD
+echo "Google Cloud: $RUNPHP_GOOGLE_CLOUD"
+
+# Exec into the upstream entrypoint
+exec docker-php-entrypoint "$@"
