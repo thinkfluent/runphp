@@ -66,6 +66,27 @@ gcloud run deploy <cloud-run-service-name> \
     --project <google-project>
 ```
 
+## Components
+runphp has the following key areas of concern:
+
+* **Foundation Docker Image**
+  * Based on official `php:7.4-apache` (other versions coming soon)
+  * Apache configurations tweaks including remote IP fixes for `X-Forwarded-For`, security options etc.
+  * A useful default set of PHP extensions
+  * Extensible (Docker!) if you need to run custom images or add further extension
+  * https://github.com/thinkfluent/runphp-foundation 
+* **Google Cloud Integrations**
+  * Google-centric PHP extensions for high performance Google APIs with `grpc` and `protobuf`
+  * Automatic integration with Google [Cloud Error Reporting](https://cloud.google.com/error-reporting)
+  * Optional support for integration with [Google Cloud Trace](https://cloud.google.com/trace) via `opencensus`
+* **Composer-oriented Project Tooling**
+  * (coming soon) Rapid creation of new projects with `composer create-project`
+  * PHP extension detection via `ext-*`
+  * PHP preloading from Composer class map (or other sources) for high performance in production
+* **Getting-started Admin Interface**
+  * Simple admin UI, with phpinfo, opcache inspection
+
+
 ## Customisation
 
 ### Apache
@@ -90,24 +111,6 @@ They are controlled via environment variables as follows:
 * `RUNPHP_COMPOSER_PATH="/app"`
 * `RUNPHP_PRELOAD_STRATEGY="src"` - "none", "composer-classmap" or "src"
 * `RUNPHP_PRELOAD_ACTION="include"` - "include" or "compile"
-
-## Components
-* **Foundation Docker Image**
-  * Based on official `php:7.4-apache` (other versions coming soon)
-  * Apache configurations tweaks including remote IP fixes for `X-Forwarded-For`, security options etc.
-  * A useful default set of PHP extensions
-  * Extensible (Docker!) if you need to run custom images or add further extension 
-* **Google Cloud Integrations**
-  * Google-centric PHP extensions for high performance Google APIs with `grpc` and `protobuf`
-  * Automatic integration with Google [Cloud Error Reporting](https://cloud.google.com/error-reporting)
-  * Optional support for integration with [Google Cloud Trace](https://cloud.google.com/trace) via `opencensus`
-* **Composer-oriented Project Tooling**
-  * (coming soon) Rapid creation of new projects with `composer create-project`
-  * PHP extension detection via `ext-*`
-  * PHP preloading from Composer class map (or other sources) for high performance in production
-* **Getting-started Admin Interface**
-  * Simple admin UI, with phpinfo, opcache inspection
-
 
 ## Automated Build & Deploy
 This is the **recommended method** - [Continuous Deployment using Cloud Build](https://cloud.google.com/run/docs/continuous-deployment-with-cloud-build). Which can be very easily set up in the Cloud Run interface when creating a service, or manually afterwards.
