@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+###################################################
+# Add your instructions and startup software here #
+###################################################
+
+# Finally, exec into the runphp entrypoint
+exec docker-runphp-entrypoint "$@"

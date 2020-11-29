@@ -89,6 +89,17 @@ runphp has the following key areas of concern:
 
 ## Customisation
 
+### Entrypoint
+
+In our Docker entrypoint, we set up some important ENV variables to help the runphp stack operate correctly.
+
+If you want to do additional work on container startup, you can 
+
+* Define `RUNPHP_EXTRA_ENTRYPOINT_CMD="<your command here>"` in your environment, and we'll execute your script after ours
+  * This means you get access to `RUNPHP_GOOGLE_CLOUD` and other environment values
+* Replace the entrypoint, but make sure you execute `docker-runphp-entrypoint` at the end of your script.
+  * We've included an example entrypoint script at [manifest/usr/local/bin/docker-custom-entrypoint](/runphp/thinkfluent/runphp/blob/master/manifest/usr/local/bin/docker-custom-entrypoint)
+
 ### Apache
 
 If you want to roll your own apache configs, you can disable the runphp sites in your Dockerfile with

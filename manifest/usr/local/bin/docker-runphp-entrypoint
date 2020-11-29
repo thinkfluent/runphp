@@ -19,5 +19,8 @@ RUNPHP_GOOGLE_CLOUD="$(php /runphp-foundation/bin/startup-check-google-cloud.php
 export RUNPHP_GOOGLE_CLOUD
 echo "Google Cloud: $RUNPHP_GOOGLE_CLOUD"
 
+# If we have RUNPHP_EXTRA_ENTRYPOINT_CMD, try and execute it
+[ -z "${RUNPHP_EXTRA_ENTRYPOINT_CMD}" ] || eval "${RUNPHP_EXTRA_ENTRYPOINT_CMD}"
+
 # Exec into the upstream entrypoint
 exec docker-php-entrypoint "$@"
