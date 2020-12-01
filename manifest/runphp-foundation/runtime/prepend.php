@@ -29,6 +29,11 @@ if ($obj_runtime->isGoogleCloud()) {
     (new Google\ReportedErrorHandler())->register();
 }
 
+// CLI mode, we're done here...
+if ('cli' === PHP_SAPI) {
+    return;
+}
+
 // In DEV mode, if this is a request for an admin page, load, run & exit.
 if ('/_runphp' === substr($_SERVER['REQUEST_URI'] ?? '', 0, 8) && $obj_runtime->allowAdmin()) {
     require_once __DIR__ . '/../admin/admin.php';
