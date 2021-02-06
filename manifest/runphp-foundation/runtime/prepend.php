@@ -5,7 +5,7 @@
  * - Register error, exception handlers
  * - Verify we've disabled Xdebug in production
  * - Check for (and execute) admin requests
- * - @todo Enable profiling
+ * - Enable profiling
  *
  * @author Tom Walder <tom@thinkfluent.co.uk>
  */
@@ -40,11 +40,26 @@ if ('/_runphp' === substr($_SERVER['REQUEST_URI'] ?? '', 0, 8) && $obj_runtime->
     exit();
 }
 
+// Profiling
+if ($obj_runtime->shouldProfile()) {
+    if (extension_loaded('tideways_xhprof') && function_exists('tideways_xhprof_enable')) {
+        register_shutdown_function(function () {
+            $str_data = serialize(tideways_xhprof_disable());
+            file_put_contents(
+                rtrim(getenv('XHPROF_OUTPUT'), '/') . '/' .
+                uniqid() . '.http_' .
+                preg_replace('#[^A-Za-z0-9]#', '_', ($_SERVER['REQUEST_URI'] ?? '')) .
+                '.xhprof',
+                $str_data
+            );
+        });
+        // @todo Consider enable, sampling only?
+        tideways_xhprof_enable(TIDEWAYS_XHPROF_FLAGS_MEMORY | TIDEWAYS_XHPROF_FLAGS_CPU);
+    }
+}
+
 // Optional custom prepend file
 $str_optional_prepend = $obj_runtime->getAdditionalPrependFile();
 if (is_readable($str_optional_prepend)) {
     include_once $str_optional_prepend;
 }
-
-
-// @todo consider enabling profiling

@@ -125,3 +125,12 @@ They are controlled via environment variables as follows:
 
 ## Automated Build & Deploy
 This is the **recommended method** - [Continuous Deployment using Cloud Build](https://cloud.google.com/run/docs/continuous-deployment-with-cloud-build). Which can be very easily set up in the Cloud Run interface when creating a service, or manually afterwards.
+
+### XHProf Profiling
+
+By adding the following ENV variable, we turn on xhprof profiling for PHP requests
+* `RUNPHP_XHPROF_PROFILING="true"`
+
+The XHProf GUI can be accessed at `/xhprof`
+
+Please note: profiling data files are transient in Cloud Run, as instances are stopped & started.

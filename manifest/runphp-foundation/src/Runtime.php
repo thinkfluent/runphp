@@ -13,6 +13,7 @@ class Runtime
     public const ENV_FOUNDATION_VERSION = 'RUNPHP_FOUNDATION_VERSION';
     public const ENV_GOOGLE_CLOUD = 'RUNPHP_GOOGLE_CLOUD';
     public const ENV_PROD_ADMIN = 'RUNPHP_ALLOW_PRODUCTION_ADMIN';
+    public const ENV_PROFILING = 'RUNPHP_XHPROF_PROFILING';
     public const ENV_PREPEND = 'RUNPHP_EXTRA_PREPEND';
 
     /**
@@ -92,6 +93,19 @@ class Runtime
             self::MODE_DEV === $this->getMode()
             || 'true' === ($this->arr_env[self::ENV_PROD_ADMIN] ?? 'false')
         );
+    }
+
+    /**
+     * Should we allow profiling?
+     *
+     * @return bool
+     */
+    public function shouldProfile(): bool
+    {
+        return (
+            // self::MODE_DEV === $this->getMode() &&
+            'true' === ($this->arr_env[self::ENV_PROFILING] ?? 'false')
+        ) && (false === strpos(($_SERVER['REQUEST_URI'] ?? ''), '/xhprof'));
     }
 
     /**
