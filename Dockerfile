@@ -1,7 +1,7 @@
 ARG TAG_NAME="dev-master"
 
 ################################################################################################################
-FROM fluentthinking/runphp-foundation:v0.5.1-dev
+FROM fluentthinking/runphp-foundation:v0.6.0
 ARG TAG_NAME
 
 # Install our code, then switch from foundation to our runphp site
@@ -28,8 +28,20 @@ ENV RUNPHP_PRELOAD_STRATEGY="src"
 # PHP Preloading - "include" or "compile"
 ENV RUNPHP_PRELOAD_ACTION="include"
 
+# Install profile viewer
+ENV XHPROF_OUTPUT="/tmp/xhprof"
+#RUN curl https://github.com/tomwalder/xhprof/archive/master.tar.gz --silent --location --output /tmp/xhprof.tgz && \
+#    tar xfz /tmp/xhprof.tgz -C /tmp/ && \
+#    mv /tmp/xhprof-master /runphp-foundation/admin/xhprof && \
+#    rm -rf /tmp/xhprof.tgz && \
+RUN mkdir -p /tmp/xhprof \
+    && chown www-data:www-data /tmp/xhprof \
+    && apt-get install -y graphviz \
+    && apt-get clean
+
 # Optional
 # ENV RUNPHP_SKIP_COMPOSER_EXTENSION_CHECKS="true"
 # ENV RUNPHP_ALLOW_PRODUCTION_ADMIN="true"
+# ENV RUNPHP_XHPROF_PROFILING="true"
 # ENV RUNPHP_EXTRA_PREPEND="/some/prepend.php"
 # ENV RUNPHP_EXTRA_ENTRYPOINT_CMD="php /runphp/hello.php"
