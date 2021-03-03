@@ -109,6 +109,21 @@ class Runtime
     }
 
     /**
+     * Called as a shutdown function, if we are profiling the request
+     */
+    public function profileRequestShutdown(): void
+    {
+        $str_data = serialize(tideways_xhprof_disable());
+        file_put_contents(
+            rtrim(getenv('XHPROF_OUTPUT'), '/') . '/' .
+            uniqid() . '.http_' .
+            preg_replace('#[^A-Za-z0-9]#', '_', ($_SERVER['REQUEST_URI'] ?? '')) .
+            '.xhprof',
+            $str_data
+        );
+    }
+
+    /**
      * @return string
      */
     public function getAdditionalPrependFile(): string

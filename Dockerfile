@@ -1,7 +1,7 @@
 ARG TAG_NAME="dev-master"
 
 ################################################################################################################
-FROM fluentthinking/runphp-foundation:v0.6.0
+FROM fluentthinking/runphp-foundation:7.4.15-v0.6.0
 ARG TAG_NAME
 
 # Install our code, then switch from foundation to our runphp site
@@ -28,16 +28,18 @@ ENV RUNPHP_PRELOAD_STRATEGY="src"
 # PHP Preloading - "include" or "compile"
 ENV RUNPHP_PRELOAD_ACTION="include"
 
-# Install profile viewer
+# Setup the XHprof output dir, install additional libs
 ENV XHPROF_OUTPUT="/tmp/xhprof"
-#RUN curl https://github.com/tomwalder/xhprof/archive/master.tar.gz --silent --location --output /tmp/xhprof.tgz && \
-#    tar xfz /tmp/xhprof.tgz -C /tmp/ && \
-#    mv /tmp/xhprof-master /runphp-foundation/admin/xhprof && \
-#    rm -rf /tmp/xhprof.tgz && \
-RUN mkdir -p /tmp/xhprof \
-    && chown www-data:www-data /tmp/xhprof \
-    && apt-get install -y graphviz \
-    && apt-get clean
+RUN mkdir -p /tmp/xhprof && \
+    chown www-data:www-data /tmp/xhprof && \
+    apt-get install -y graphviz && \
+    apt-get clean
+
+# Install profile viewer
+RUN curl https://github.com/thinkfluent/xhprof/archive/master.tar.gz --silent --location --output /tmp/xhprof.tgz && \
+    tar xfz /tmp/xhprof.tgz -C /tmp/ && \
+    mv /tmp/xhprof-master/* /runphp-foundation/admin/xhprof && \
+    rm -rf /tmp/xhprof.tgz
 
 # Optional
 # ENV RUNPHP_SKIP_COMPOSER_EXTENSION_CHECKS="true"
