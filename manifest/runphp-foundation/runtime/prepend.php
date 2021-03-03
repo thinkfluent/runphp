@@ -40,6 +40,13 @@ if ('/_runphp' === substr($_SERVER['REQUEST_URI'] ?? '', 0, 8) && $obj_runtime->
     exit();
 }
 
+// Optional custom prepend file (we do some work ahead of profile start to keep profile clean)
+$bol_include_prepend = false;
+$str_optional_prepend = $obj_runtime->getAdditionalPrependFile();
+if (is_readable($str_optional_prepend)) {
+    $bol_include_prepend = true;
+}
+
 // Profiling
 if ($obj_runtime->shouldProfile()) {
     if (extension_loaded('tideways_xhprof') && function_exists('tideways_xhprof_enable')) {
@@ -50,7 +57,6 @@ if ($obj_runtime->shouldProfile()) {
 }
 
 // Optional custom prepend file
-$str_optional_prepend = $obj_runtime->getAdditionalPrependFile();
-if (is_readable($str_optional_prepend)) {
+if ($bol_include_prepend) {
     include_once $str_optional_prepend;
 }
