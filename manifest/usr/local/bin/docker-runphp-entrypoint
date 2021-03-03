@@ -14,7 +14,7 @@ fi
 # Enable apache config for xhprof
 if [ "${RUNPHP_XHPROF_PROFILING}" = 'true' ]; then
   echo "Enabling xhprof apache config"
-  a2ensite 003-xhprof
+  a2ensite -q 003-xhprof
 fi
 
 # Evaluate composer, decide what extensions are not enabled
