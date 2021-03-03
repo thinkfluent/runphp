@@ -1,7 +1,7 @@
 ARG TAG_NAME="dev-master"
 
 ################################################################################################################
-FROM fluentthinking/runphp-foundation:7.4.15-v0.6.0
+FROM fluentthinking/runphp-foundation:8.0.2-v0.6.1
 ARG TAG_NAME
 
 # Install our code, then switch from foundation to our runphp site
