@@ -37,6 +37,7 @@ if ($obj_runtime->isGoogleCloud()) {
     $str_service = 'local';
     $str_disable_gcloud = 'disabled';
 }
+$bol_profiling = $obj_runtime->isProfilingEnabled();
 
 // Early-out for metadata requests
 if ('/_runphp/metadata' === substr($_SERVER['REQUEST_URI'] ?? '', 0, 17)) {
@@ -74,6 +75,7 @@ $arr_ext_installed_not_enabled = array_diff($arr_installed, $arr_ext_enabled);
             <span class="badge badge-pill badge-secondary">foundation: <?php echo $obj_runtime->getFoundationVersion(); ?></span>
             <span class="badge badge-pill badge-secondary">runphp: <?php echo $obj_runtime->getVersion(); ?></span>
             <span class="badge badge-pill badge-secondary">PHP: <?php echo $obj_runtime->env()['PHP_VERSION']; ?></span>
+            <span class="badge badge-pill badge-secondary">XHProf: <?php echo $obj_runtime->isProfilingEnabled() ? 'enabled' : 'disabled'; ?></span>
         </div>
         <div class="row mb-3">
             <div class="col">
@@ -125,9 +127,12 @@ $arr_ext_installed_not_enabled = array_diff($arr_installed, $arr_ext_enabled);
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Xdebug, Profiling</h5>
-                            <p class="card-text">In dev mode, we enable Xdebug for you. Control this via the <code>RUNPHP_MODE</code> environment variable.</p>
-                            <p class="card-text">Performance profiling with XHProf... coming soon!</p>
+                            <h5 class="card-title">Debugging, Profiling</h5>
+                            <p class="card-text">In dev mode, we enable Xdebug for you. Control this via <code>RUNPHP_MODE</code>.</p>
+                            <p class="card-text">Performance profiling with XHProf.</p>
+                            <p class="card-text">
+                                <a class="btn btn-outline-primary <?php echo $bol_profiling ? '' : 'disabled' ?>" href="/xhprof">XHProf Viewer</a>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -139,7 +144,8 @@ $arr_ext_installed_not_enabled = array_diff($arr_installed, $arr_ext_enabled);
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">PHP Extensions</h5>
-                            <p class="card-text">runphp comes with a bunch of common PHP extensions compiled. Some are enabled by default, and some you either have to turn on yourself - or let our Composer extension detection handle this for you.</p>
+                            <p class="card-text">runphp comes with a bunch of common PHP extensions compiled and available to use.</p>
+                            <p class="card-text">Some are enabled by default, and some you either have to turn on yourself - or let our Composer extension detection handle this for you.</p>
                             <h6 class="card-title">Enabled</h6>
                             <p class="card-text">
                                 <code><?php echo implode(', ', $arr_ext_enabled); ?></code>

@@ -102,10 +102,17 @@ class Runtime
      */
     public function shouldProfile(): bool
     {
-        return (
-            // self::MODE_DEV === $this->getMode() &&
-            'true' === ($this->arr_env[self::ENV_PROFILING] ?? 'false')
-        ) && (false === strpos(($_SERVER['REQUEST_URI'] ?? ''), '/xhprof'));
+        return $this->isProfilingEnabled() && (false === strpos(($_SERVER['REQUEST_URI'] ?? ''), '/xhprof'));
+    }
+
+    /**
+     * Has profiling been enabled in the Environment?
+     *
+     * @return bool
+     */
+    public function isProfilingEnabled(): bool
+    {
+        return 'true' === ($this->arr_env[self::ENV_PROFILING] ?? 'false');
     }
 
     /**
