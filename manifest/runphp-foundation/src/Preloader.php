@@ -87,7 +87,7 @@ class Preloader
     }
 
     /**
-     * Return the contents of the Composer classmap
+     * Return the contents of the Composer classmap, using the Composer autoloader to fill in the blanks
      *
      * @return array
      */
@@ -95,7 +95,11 @@ class Preloader
     {
         $arr_files = [];
         $str_composer_path = rtrim((string)getenv('RUNPHP_COMPOSER_PATH'), '/');
+        $str_autoload_file = $str_composer_path . '/vendor/autoload.php';
         if (is_dir($str_composer_path)) {
+            if (is_readable($str_autoload_file)) {
+                require_once $str_autoload_file;
+            }
             $str_classmap = $str_composer_path . '/vendor/composer/autoload_classmap.php';
             if (is_readable($str_classmap)) {
                 $arr_files = include_once $str_classmap;

@@ -114,6 +114,8 @@ runphp takes advantage of the PHP `auto_prepend_file` ini control to provide som
 If you want to provide an additional prepend file, without losing the runphp stack, you can 
 define `RUNPHP_EXTRA_PREPEND="/some/prepend.php"` in your environment.
 
+If you also enable profiling (see below on how to do thi), your prepend file is included in the profile.
+
 ### PHP Preloading
 
 runphp supports a few PHP preloading strategies, as no one-solution fits all. 

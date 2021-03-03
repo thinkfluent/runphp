@@ -43,16 +43,7 @@ if ('/_runphp' === substr($_SERVER['REQUEST_URI'] ?? '', 0, 8) && $obj_runtime->
 // Profiling
 if ($obj_runtime->shouldProfile()) {
     if (extension_loaded('tideways_xhprof') && function_exists('tideways_xhprof_enable')) {
-        register_shutdown_function(function () {
-            $str_data = serialize(tideways_xhprof_disable());
-            file_put_contents(
-                rtrim(getenv('XHPROF_OUTPUT'), '/') . '/' .
-                uniqid() . '.http_' .
-                preg_replace('#[^A-Za-z0-9]#', '_', ($_SERVER['REQUEST_URI'] ?? '')) .
-                '.xhprof',
-                $str_data
-            );
-        });
+        register_shutdown_function([$obj_runtime, 'profileRequestShutdown']);
         // @todo Consider enable, sampling only?
         tideways_xhprof_enable(TIDEWAYS_XHPROF_FLAGS_MEMORY | TIDEWAYS_XHPROF_FLAGS_CPU);
     }
