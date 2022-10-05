@@ -100,6 +100,9 @@ class ReportedErrorHandler
         if(empty($arr_env)) {
             $arr_env = Runtime::get()->env();
         }
+        if ('cli' === PHP_SAPI) {
+            // @todo Better handle CLI, kubernetes logs (and review Cloud Run Job workloads)
+        }
         $str_severity = $arr_error_map[$int_errno] ?? 'ERROR';
         $obj_payload = [
             '@type' => 'type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent',
