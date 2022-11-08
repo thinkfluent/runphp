@@ -24,6 +24,10 @@ fi
 RUNPHP_GOOGLE_CLOUD="$(php /runphp-foundation/bin/startup-check-google-cloud.php)"
 export RUNPHP_GOOGLE_CLOUD
 echo "Google Cloud: $RUNPHP_GOOGLE_CLOUD"
+if [ "${RUNPHP_GOOGLE_CLOUD}" = 'yes' ]; then
+  RUNPHP_APACHE_STACKDRIVER_LOGS="yes"
+  export RUNPHP_APACHE_STACKDRIVER_LOGS
+fi
 
 # If we have RUNPHP_EXTRA_ENTRYPOINT_CMD, try and execute it
 [ -z "${RUNPHP_EXTRA_ENTRYPOINT_CMD}" ] || eval "${RUNPHP_EXTRA_ENTRYPOINT_CMD}"

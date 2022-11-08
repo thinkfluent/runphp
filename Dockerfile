@@ -1,12 +1,12 @@
 ARG TAG_NAME="dev-master"
 
 ################################################################################################################
-FROM fluentthinking/runphp-foundation:7.4.32-v0.6.4
+FROM fluentthinking/runphp-foundation:7.4.33-v0.7.0
 ARG TAG_NAME
 
 # Install our code, then switch from foundation to our runphp site
 COPY ./manifest /
-RUN a2dissite 001-runphp-foundation && a2ensite 002-runphp
+RUN a2dissite 001-runphp-foundation && a2ensite 002-runphp && a2disconf other-vhosts-access-log
 
 # So we can handle signals properly (Cloud Run will send a SIGTERM)
 # Re-map SIGTERM to SIGWINCH for graceful apache shutdown

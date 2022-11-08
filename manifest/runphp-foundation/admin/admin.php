@@ -22,9 +22,7 @@ if ('/_runphp/opcache' === substr($_SERVER['REQUEST_URI'] ?? '', 0, 16)) {
 // Gather data
 $obj_runtime = Runtime::get();
 if ($obj_runtime->isGoogleCloud()) {
-    require_once __DIR__ . '/../src/Google/Metadata.php';
-    $str_metadata = (new \ThinkFluent\RunPHP\Google\Metadata())->fetch()->getData();
-    $obj_metadata = json_decode($str_metadata);
+    $obj_metadata = $obj_runtime->fetchMetadata();
     $str_project = $obj_metadata->computeMetadata->v1->project->projectId;
     $arr_zone_parts = explode('/', $obj_metadata->computeMetadata->v1->instance->region);
     $str_running_location = array_pop($arr_zone_parts);
