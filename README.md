@@ -75,22 +75,24 @@ gcloud run deploy <cloud-run-service-name> \
 runphp has the following key areas of concern:
 
 * **Foundation Docker Image**
-  * Based on official `php:7.4-apache` (other versions coming soon)
+  * Based on official `php:7.4-apache`, `php:8.0-apache` (other versions coming soon)
   * Apache configurations tweaks including remote IP fixes for `X-Forwarded-For`, security options etc.
   * A useful default set of PHP extensions
   * Extensible (Docker!) if you need to run custom images or add further extension
   * https://github.com/thinkfluent/runphp-foundation 
 * **Google Cloud Integrations**
-  * Google-centric PHP extensions for high performance Google APIs with `grpc` and `protobuf`
+  * Google-centric PHP extensions built-in, for high performance Google APIs with `grpc` and `protobuf`
   * Automatic integration with Google [Cloud Error Reporting](https://cloud.google.com/error-reporting)
-  * Optional support for integration with [Google Cloud Trace](https://cloud.google.com/trace) via `opencensus`
+  * Google trace-linked logging (request-grouped log messages in the GCP log viewer). PHP memory and latency data by default.
+  * (coming soon) Optional support for integration with [Google Cloud Trace](https://cloud.google.com/trace) via `opencensus`
 * **Composer-oriented Project Tooling**
   * (coming soon) Rapid creation of new projects with `composer create-project`
   * PHP extension detection via `ext-*`
   * PHP preloading from Composer class map (or other sources) for high performance in production
 * **Getting-started Admin Interface**
   * Simple admin UI, with phpinfo, opcache inspection
-
+* **Request Profiling**
+  * [XHProf-based profiling](#xhprof-profiling)
 
 ## Customisation
 
@@ -114,12 +116,12 @@ RUN a2dissite 002-runphp
 
 ### PHP Prepend
 
-runphp takes advantage of the PHP `auto_prepend_file` ini control to provide some of it's features.
+runphp takes advantage of the PHP `auto_prepend_file` ini control to provide some of its features.
 
 If you want to provide an additional prepend file, without losing the runphp stack, you can 
 define `RUNPHP_EXTRA_PREPEND="/some/prepend.php"` in your environment.
 
-If you also enable profiling (see below on how to do thi), your prepend file is included in the profile.
+If you also enable profiling (see below on how to do this), your prepend file is included in the profile.
 
 ### PHP Preloading
 
