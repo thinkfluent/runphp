@@ -6,8 +6,9 @@ Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
 | PHP Version | Latest Image                          |
 |-------------|---------------------------------------|
-| PHP 8.0.24  | `fluentthinking/runphp:8.0.24-v0.4.8` |
-| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.6.0` |
+| PHP 8.1.12  | `fluentthinking/runphp:8.1.12-v0.7.0` |
+| PHP 8.0.25  | `fluentthinking/runphp:8.0.25-v0.7.0` |
+| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.7.0` |
 
 #### Some Benefits of Cloud Run with runphp
 
@@ -138,8 +139,18 @@ This is the **recommended method** - [Continuous Deployment using Cloud Build](h
 ### XHProf Profiling
 
 By adding the following ENV variable, we turn on xhprof profiling for PHP requests
-* `RUNPHP_XHPROF_PROFILING="true"`
+* `RUNPHP_XHPROF_PROFILING="yes"`
 
 The XHProf GUI can be accessed at `/xhprof`
 
 Please note: profiling data files are transient in Cloud Run, as instances are stopped & started.
+
+## Building runphp
+
+If you need to build your own base images (this repo)...
+
+```bash
+build.sh -v 7.4.33 -f v0.7.0 -t dev
+build.sh -v 8.0.25 -f v0.7.0 -t dev
+build.sh -v 8.1.12 -f v0.7.0 -t dev
+```

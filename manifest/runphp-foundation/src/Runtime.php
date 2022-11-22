@@ -20,6 +20,10 @@ class Runtime
         ENV_TRACE_PROJECT = 'RUNPHP_TRACE_PROJECT';
 
     public const
+        ENV_TRUE = 'true',
+        ENV_YES = 'yes';
+
+    public const
         SERVER_TRACE_CONTEXT_HEADER = 'HTTP_X_CLOUD_TRACE_CONTEXT';
 
     /**
@@ -97,7 +101,7 @@ class Runtime
     {
         return (
             self::MODE_DEV === $this->getMode()
-            || 'true' === ($this->arr_env[self::ENV_PROD_ADMIN] ?? 'false')
+            || $this->isTruthy($this->arr_env[self::ENV_PROD_ADMIN] ?? 'no')
         );
     }
 
@@ -108,10 +112,9 @@ class Runtime
      */
     public function shouldProfile(): bool
     {
-        return (
-            // self::MODE_DEV === $this->getMode() &&
-            'true' === ($this->arr_env[self::ENV_PROFILING] ?? 'false')
-        ) && (false === strpos(($_SERVER['REQUEST_URI'] ?? ''), '/xhprof'));
+        return
+            $this->isTruthy($this->arr_env[self::ENV_PROFILING] ?? 'no')
+            && false === strpos(($_SERVER['REQUEST_URI'] ?? ''), '/xhprof');
     }
 
     /**
@@ -119,7 +122,7 @@ class Runtime
      */
     public function profileRequestShutdown(): void
     {
-        $str_data = serialize(tideways_xhprof_disable());
+        $str_data = serialize(xhprof_disable());
         file_put_contents(
             rtrim(getenv('XHPROF_OUTPUT'), '/') . '/' .
             uniqid() . '.http_' .
@@ -182,5 +185,18 @@ class Runtime
             return sprintf('projects/%s/traces/%s', $str_project_id, $arr_trace_parts[0]);
         }
         return 'unknown';
+    }
+
+    /**
+     * A truthy value?
+     *
+     * @param $mix_env_value
+     * @return bool
+     */
+    protected function isTruthy($mix_env_value): bool
+    {
+        return true === $mix_env_value
+            || self::ENV_YES === $mix_env_value
+            || self::ENV_TRUE === $mix_env_value;
     }
 }

@@ -12,7 +12,7 @@ else
 fi
 
 # Enable apache config for xhprof
-if [ "${RUNPHP_XHPROF_PROFILING}" = 'true' ]; then
+if [ "${RUNPHP_XHPROF_PROFILING}" = 'yes' ] || [ "${RUNPHP_XHPROF_PROFILING}" = 'true' ]; then
   echo "Enabling xhprof apache config"
   a2ensite -q 003-xhprof
 fi

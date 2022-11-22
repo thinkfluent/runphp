@@ -1,7 +1,10 @@
 ARG TAG_NAME="dev-master"
 
+ARG BUILD_PHP_VER="7.4.33"
+ARG BUILD_FOUNDATION_SUFFIX="v0.8.2"
+
 ################################################################################################################
-FROM fluentthinking/runphp-foundation:7.4.33-v0.7.0
+FROM fluentthinking/runphp-foundation:${BUILD_PHP_VER}-${BUILD_FOUNDATION_SUFFIX}
 ARG TAG_NAME
 
 # Install our code, then switch from foundation to our runphp site
@@ -43,7 +46,7 @@ RUN curl https://github.com/thinkfluent/xhprof/archive/master.tar.gz --silent --
 
 # Optional
 # ENV RUNPHP_SKIP_COMPOSER_EXTENSION_CHECKS="true"
-# ENV RUNPHP_ALLOW_PRODUCTION_ADMIN="true"
-# ENV RUNPHP_XHPROF_PROFILING="true"
+# ENV RUNPHP_ALLOW_PRODUCTION_ADMIN="yes"
+# ENV RUNPHP_XHPROF_PROFILING="yes"
 # ENV RUNPHP_EXTRA_PREPEND="/some/prepend.php"
 # ENV RUNPHP_EXTRA_ENTRYPOINT_CMD="php /runphp/hello.php"

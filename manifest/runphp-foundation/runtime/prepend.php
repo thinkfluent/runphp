@@ -58,10 +58,10 @@ if (is_readable($str_optional_prepend)) {
 
 // Profiling
 if ($obj_runtime->shouldProfile()) {
-    if (extension_loaded('tideways_xhprof') && function_exists('tideways_xhprof_enable')) {
+    if (extension_loaded('xhprof') && function_exists('xhprof_enable')) {
         register_shutdown_function([$obj_runtime, 'profileRequestShutdown']);
         // @todo Consider enable, sampling only?
-        tideways_xhprof_enable(TIDEWAYS_XHPROF_FLAGS_MEMORY | TIDEWAYS_XHPROF_FLAGS_CPU);
+        xhprof_enable(XHPROF_FLAGS_MEMORY | XHPROF_FLAGS_CPU);
     }
 }
 
