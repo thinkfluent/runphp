@@ -169,11 +169,25 @@ class Runtime
     }
 
     /**
-     * Build a trace ID, to allow logs in GCP to be grouped together
+     * Return a thread-cached trace context
      *
      * @return string
      */
     public function getTraceContext(): string
+    {
+        static $str_trace_context = null;
+        if (null === $str_trace_context) {
+            $str_trace_context = $this->resolveTraceContext();
+        }
+        return $str_trace_context;
+    }
+
+    /**
+     * Build a trace ID, to allow logs in GCP to be grouped together
+     *
+     * @return string
+     */
+    private function resolveTraceContext(): string
     {
         if (isset($_SERVER[self::SERVER_TRACE_CONTEXT_HEADER])) {
             $arr_trace_parts = explode('/', $_SERVER[self::SERVER_TRACE_CONTEXT_HEADER]);

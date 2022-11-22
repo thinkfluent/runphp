@@ -27,6 +27,8 @@ echo "Google Cloud: $RUNPHP_GOOGLE_CLOUD"
 if [ "${RUNPHP_GOOGLE_CLOUD}" = 'yes' ]; then
   RUNPHP_APACHE_STACKDRIVER_LOGS="yes"
   export RUNPHP_APACHE_STACKDRIVER_LOGS
+  RUNPHP_TRACE_PROJECT="$(php /runphp-foundation/bin/startup-fetch-gcp-project.php)"
+  export RUNPHP_TRACE_PROJECT;
 fi
 
 # If we have RUNPHP_EXTRA_ENTRYPOINT_CMD, try and execute it

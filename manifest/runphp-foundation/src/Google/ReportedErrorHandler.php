@@ -130,6 +130,11 @@ class ReportedErrorHandler
                 ]
             ]
         ];
+        try {
+            $obj_payload['logging.googleapis.com/trace'] = \ThinkFluent\RunPHP\Runtime::get()->getTraceContext();
+        } catch (\Throwable $obj_thrown) {
+            // swallow
+        }
         file_put_contents('php://stderr', json_encode($obj_payload) . PHP_EOL);
     }
 
