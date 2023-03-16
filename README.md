@@ -4,11 +4,12 @@ The `thinkfluent/runphp` toolkit enables rapid application development and serve
 
 Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
-| PHP Version | Latest Image                                   |
-|-------------|------------------------------------------------|
-| PHP 8.1.12  | `fluentthinking/runphp:8.1.12-v0.8.0` `latest` |
-| PHP 8.0.25  | `fluentthinking/runphp:8.0.25-v0.8.0`          |
-| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.8.0`          |
+| PHP Version | Latest Image                                  |
+|-------------|-----------------------------------------------|
+| PHP 8.2.3   | `fluentthinking/runphp:8.2.3-v0.8.0` `latest` |
+| PHP 8.1.16  | `fluentthinking/runphp:8.1.16-v0.8.0`         |
+| PHP 8.0.28  | `fluentthinking/runphp:8.0.28-v0.8.0`         |
+| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.8.0`         |
 
 #### Some Benefits of Cloud Run with runphp
 
@@ -76,19 +77,20 @@ gcloud run deploy <cloud-run-service-name> \
 runphp has the following key areas of concern:
 
 * **Foundation Docker Image**
-  * Based on official `php:7.4-apache`, `php:8.0-apache` (other versions coming soon)
+  * Based on upstream `php:7.4-apache`, `php:8.0-apache`, `php:8.1-apache`
   * Apache configurations tweaks including remote IP fixes for `X-Forwarded-For`, security options etc.
   * A useful default set of PHP extensions
   * Extensible (Docker!) if you need to run custom images or add further extension
   * https://github.com/thinkfluent/runphp-foundation 
 * **Google Cloud Integrations**
-  * Google-centric PHP extensions built-in, for high performance Google APIs with `grpc` and `protobuf`
+  * Google-centric PHP extensions built-in, for high performance Google API calls with `grpc` and `protobuf`
   * Automatic integration with Google [Cloud Error Reporting](https://cloud.google.com/error-reporting)
   * Google trace-linked logging (request-grouped log messages in the GCP log viewer). PHP memory and latency data by default.
+    * See https://github.com/thinkfluent/runphp-monolog-formatter 
   * (coming soon) Optional support for integration with [Google Cloud Trace](https://cloud.google.com/trace) via `opencensus`
 * **Composer-oriented Project Tooling**
   * (coming soon) Rapid creation of new projects with `composer create-project`
-  * PHP extension detection via `ext-*`
+  * PHP extension detection & automatic enable via `ext-*`
   * PHP preloading from Composer class map (or other sources) for high performance in production
 * **Getting-started Admin Interface**
   * Simple admin UI, with phpinfo, opcache inspection
@@ -97,7 +99,7 @@ runphp has the following key areas of concern:
 
 ## Customisation
 
-### Entrypoint
+### Docker Entrypoint
 
 In our Docker entrypoint, we set up some important ENV variables to help the runphp stack operate correctly.
 
