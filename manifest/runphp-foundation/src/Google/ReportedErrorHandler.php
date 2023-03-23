@@ -34,14 +34,13 @@ class ReportedErrorHandler
      */
     public function handleException(\Throwable $obj_thrown)
     {
-        if ($obj_thrown instanceof \Error) {
-            $str_message = sprintf('PHP Warning: %s', (string)$obj_thrown);
-        } else {
-            $str_message = sprintf("PHP Fatal error: Uncaught exception: %s", (string)$obj_thrown);
-        }
         $this->handleError(
             $obj_thrown->getCode(),
-            $str_message,
+            sprintf(
+                "PHP Warning: %s\nStack trace:\n%s",
+                (string) $obj_thrown,
+                $obj_thrown->getTraceAsString()
+            ),
             $obj_thrown->getFile(),
             $obj_thrown->getLine(),
             [
@@ -104,7 +103,7 @@ class ReportedErrorHandler
             // @todo Better handle CLI, kubernetes logs (and review Cloud Run Job workloads)
         }
         $str_severity = $arr_error_map[$int_errno] ?? 'ERROR';
-        $obj_payload = [
+        $arr_payload = [
             '@type' => 'type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent',
             "eventTime" => (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format(self::DTM_FORMAT),
             "severity" => $str_severity,
@@ -131,11 +130,11 @@ class ReportedErrorHandler
             ]
         ];
         try {
-            $obj_payload['logging.googleapis.com/trace'] = \ThinkFluent\RunPHP\Runtime::get()->getTraceContext();
+            $arr_payload['logging.googleapis.com/trace'] = \ThinkFluent\RunPHP\Runtime::get()->getTraceContext();
         } catch (\Throwable $obj_thrown) {
             // swallow
         }
-        file_put_contents('php://stderr', json_encode($obj_payload) . PHP_EOL);
+        file_put_contents('php://stderr', json_encode($arr_payload) . PHP_EOL);
     }
 
     /**
