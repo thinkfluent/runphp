@@ -19,7 +19,7 @@ done
 
 # And some defaults
 : ${BUILD_PHP_VER:=7.4.33}
-: ${BUILD_FOUNDATION_SUFFIX:=v0.7.0}
+: ${BUILD_FOUNDATION_SUFFIX:=v0.8.4}
 : ${BUILD_TAG:=dev}
 
 # Fully qualified tag

@@ -6,10 +6,10 @@ Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
 | PHP Version | Latest Image                                  |
 |-------------|-----------------------------------------------|
-| PHP 8.2.4   | `fluentthinking/runphp:8.2.4-v0.8.1` `latest` |
-| PHP 8.1.17  | `fluentthinking/runphp:8.1.17-v0.8.1`         |
-| PHP 8.0.28  | `fluentthinking/runphp:8.0.28-v0.8.1`         |
-| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.8.1`         |
+| PHP 8.2.5   | `fluentthinking/runphp:8.2.5-v0.8.2` `latest` |
+| PHP 8.1.18  | `fluentthinking/runphp:8.1.18-v0.8.2`         |
+| PHP 8.0.28  | `fluentthinking/runphp:8.0.28-v0.8.2`         |
+| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.8.2`         |
 
 #### Some Benefits of Cloud Run with runphp
 
@@ -77,7 +77,7 @@ gcloud run deploy <cloud-run-service-name> \
 runphp has the following key areas of concern:
 
 * **Foundation Docker Image**
-  * Based on upstream `php:7.4-apache`, `php:8.0-apache`, `php:8.1-apache`
+  * Based on upstream `php:7.4-apache`, `php:8.0-apache`, `php:8.1-apache`, `php:8.2-apache`
   * Apache configurations tweaks including remote IP fixes for `X-Forwarded-For`, security options etc.
   * A useful default set of PHP extensions
   * Extensible (Docker!) if you need to run custom images or add further extension
@@ -152,8 +152,8 @@ Please note: profiling data files are transient in Cloud Run, as instances are s
 If you need to build your own base images (this repo)...
 
 ```bash
-build.sh -v 7.4.33 -f v0.8.1 -t dev
-build.sh -v 8.0.28 -f v0.8.1 -t dev
-build.sh -v 8.1.17 -f v0.8.1 -t dev
-build.sh -v 8.2.4 -f v0.8.1 -t dev
+build.sh -v 7.4.33 -f v0.8.4 -t dev
+build.sh -v 8.0.28 -f v0.8.4 -t dev
+build.sh -v 8.1.18 -f v0.8.4 -t dev
+build.sh -v 8.2.5 -f v0.8.4 -t dev
 ```
