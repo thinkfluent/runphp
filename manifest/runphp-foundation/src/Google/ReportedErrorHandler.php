@@ -35,7 +35,7 @@ class ReportedErrorHandler
     public function handleException(\Throwable $obj_thrown)
     {
         $this->handleError(
-            $obj_thrown->getCode(),
+            (int) $obj_thrown->getCode(),
             sprintf(
                 "PHP Warning: %s\nStack trace:\n%s",
                 (string) $obj_thrown,
