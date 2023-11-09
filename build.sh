@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# build.sh -v 7.4.33 -f v0.8.7 -t dev
+# build.sh -v 7.4.33 -f v0.9.0 -t dev
 
 # Args
 while getopts ":v:t:f:" opt; do
@@ -19,7 +19,7 @@ done
 
 # And some defaults
 : ${BUILD_PHP_VER:=7.4.33}
-: ${BUILD_FOUNDATION_SUFFIX:=v0.8.7}
+: ${BUILD_FOUNDATION_SUFFIX:=v0.9.0}
 : ${BUILD_TAG:=dev}
 
 # Fully qualified tag
