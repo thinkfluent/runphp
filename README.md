@@ -6,10 +6,11 @@ Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
 | PHP Version | Latest Image                                   |
 |-------------|------------------------------------------------|
-| PHP 8.2.12  | `fluentthinking/runphp:8.2.12-v0.9.0` `latest` |
-| PHP 8.1.25  | `fluentthinking/runphp:8.1.25-v0.9.0`          |
-| PHP 8.0.30  | `fluentthinking/runphp:8.0.30-v0.9.0`          |
-| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.9.0`          |
+| PHP 8.3.0   | `fluentthinking/runphp:8.3.0-v0.10.0` `latest` |
+| PHP 8.2.13  | `fluentthinking/runphp:8.2.13-v0.10.0`         |
+| PHP 8.1.26  | `fluentthinking/runphp:8.1.26-v0.10.0`         |
+| PHP 8.0.30  | `fluentthinking/runphp:8.0.30-v0.10.0`         |
+| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.10.0`         |
 
 #### Some Benefits of Cloud Run with runphp
 
@@ -152,8 +153,19 @@ Please note: profiling data files are transient in Cloud Run, as instances are s
 If you need to build your own base images (this repo)...
 
 ```bash
-build.sh -v 7.4.33 -f v0.9.0 -t dev
-build.sh -v 8.0.30 -f v0.9.0 -t dev
-build.sh -v 8.1.25 -f v0.9.0 -t dev
-build.sh -v 8.2.12 -f v0.9.0 -t dev
+docker build \
+  --build-arg TAG_NAME=dev \
+  --build-arg BUILD_PHP_VER=8.3.0 \
+  --build-arg BUILD_FOUNDATION_SUFFIX=v0.10.0 \
+  -t runphp:dev .
+```
+
+Or, for multi-arch builds
+```bash
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  --build-arg TAG_NAME=dev \
+  --build-arg BUILD_PHP_VER=8.3.0 \
+  --build-arg BUILD_FOUNDATION_SUFFIX=v0.10.0 \
+  -t runphp:dev .
 ```
