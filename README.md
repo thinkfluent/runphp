@@ -136,6 +136,24 @@ They are controlled via environment variables as follows:
 * `RUNPHP_PRELOAD_STRATEGY="src"` - "none", "composer-classmap" or "src"
 * `RUNPHP_PRELOAD_ACTION="include"` - "include" or "compile"
 
+### Startup Messages
+runphp can produce a few useful startup messages, such as whether it has detected itself as running on Google Cloud.
+
+However, startup output to STDERR can be noisy, so is disabled by default.
+
+You can enable noisy startup with `RUNPHP_QUIET=no` as an environment variable.
+
+## Cloud Run Jobs
+The runphp stack can be used with Cloud Run Jobs, as well as Cloud Run services.
+
+### Logging & Tracing
+To help with log tracing when running as a cli job, we provide support for the following ENV variables:
+
+`RUNPHP_TRACE_CONTEXT_HINT`
+
+Which, if supplied during job execution, will be used as the trace context for the job in any logs produced with
+https://github.com/thinkfluent/runphp-monolog-formatter
+
 ## Automated Build & Deploy
 This is the **recommended method** - [Continuous Deployment using Cloud Build](https://cloud.google.com/run/docs/continuous-deployment-with-cloud-build). Which can be very easily set up in the Cloud Run interface when creating a service, or manually afterwards.
 
