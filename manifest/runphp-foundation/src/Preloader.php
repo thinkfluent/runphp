@@ -63,7 +63,7 @@ class Preloader
         }
 
         // Confirm output
-        error_log(sprintf("PHP preload done, source files [%d]", count($arr_files)));
+        // error_log(sprintf("PHP preload done, source files [%d]", count($arr_files)));
     }
 
     /**
