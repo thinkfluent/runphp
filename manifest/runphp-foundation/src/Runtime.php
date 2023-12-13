@@ -17,6 +17,7 @@ class Runtime
         ENV_PROD_ADMIN = 'RUNPHP_ALLOW_PRODUCTION_ADMIN',
         ENV_PROFILING = 'RUNPHP_XHPROF_PROFILING',
         ENV_PREPEND = 'RUNPHP_EXTRA_PREPEND',
+        ENV_TRACE_HINT = 'RUNPHP_TRACE_CONTEXT_HINT',
         ENV_TRACE_PROJECT = 'RUNPHP_TRACE_PROJECT';
 
     public const
@@ -191,14 +192,19 @@ class Runtime
     {
         if (isset($_SERVER[self::SERVER_TRACE_CONTEXT_HEADER])) {
             $arr_trace_parts = explode('/', $_SERVER[self::SERVER_TRACE_CONTEXT_HEADER]);
-            $str_project_id = $this->arr_env[self::ENV_TRACE_PROJECT] ?? '';
-            if (empty($str_project_id)) {
-                $obj_metadata = $this->fetchMetadata();
-                $str_project_id = $obj_metadata->computeMetadata->v1->project->projectId ?? 'unknown';
-            }
-            return sprintf('projects/%s/traces/%s', $str_project_id, $arr_trace_parts[0]);
+            $str_trace_id = $arr_trace_parts[0];
+        } else if (isset($this->arr_env[self::ENV_TRACE_HINT])) {
+            $arr_trace_parts = explode('/', $this->arr_env[self::ENV_TRACE_HINT]);
+            $str_trace_id = $arr_trace_parts[0];
+        } else {
+            return 'unknown';
         }
-        return 'unknown';
+        $str_project_id = $this->arr_env[self::ENV_TRACE_PROJECT] ?? '';
+        if (empty($str_project_id)) {
+            $obj_metadata = $this->fetchMetadata();
+            $str_project_id = $obj_metadata->computeMetadata->v1->project->projectId ?? 'unknown';
+        }
+        return sprintf('projects/%s/traces/%s', $str_project_id, $str_trace_id);
     }
 
     /**
