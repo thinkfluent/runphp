@@ -6,11 +6,11 @@ Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
 | PHP Version | Latest Image                                   |
 |-------------|------------------------------------------------|
-| PHP 8.3.0   | `fluentthinking/runphp:8.3.0-v0.10.0` `latest` |
-| PHP 8.2.13  | `fluentthinking/runphp:8.2.13-v0.10.0`         |
-| PHP 8.1.26  | `fluentthinking/runphp:8.1.26-v0.10.0`         |
-| PHP 8.0.30  | `fluentthinking/runphp:8.0.30-v0.10.0`         |
-| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.10.0`         |
+| PHP 8.3.0   | `fluentthinking/runphp:8.3.0-v0.11.0` `latest` |
+| PHP 8.2.13  | `fluentthinking/runphp:8.2.13-v0.11.0`         |
+| PHP 8.1.26  | `fluentthinking/runphp:8.1.26-v0.11.0`         |
+| PHP 8.0.30  | `fluentthinking/runphp:8.0.30-v0.11.0`         |
+| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.11.0`         |
 
 #### Some Benefits of Cloud Run with runphp
 
