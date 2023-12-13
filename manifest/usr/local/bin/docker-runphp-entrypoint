@@ -1,34 +1,42 @@
 #!/bin/sh
 set -e
 
+# Quiet or noisy?
+: ${RUNPHP_QUIET:="yes"}
+LOUD=false;
+if [ "${RUNPHP_QUIET}" = 'no' ] || [ "${RUNPHP_QUIET}" = 'false' ] || [ "${RUNPHP_QUIET}" = '0' ]; then
+  LOUD=true;
+fi
+
+
 # Set the mode
 if [ "${RUNPHP_MODE}" = 'development' ]; then
-  echo "Starting in development mode"
+  $LOUD && echo "Starting in development mode"
   . runphp-set-mode-development
 else
   # assume production by default
-  echo "Starting in production mode"
+  $LOUD && echo "Starting in production mode"
   . runphp-set-mode-production
 fi
 
 # Enable apache config for xhprof
 if [ "${RUNPHP_XHPROF_PROFILING}" = 'yes' ] || [ "${RUNPHP_XHPROF_PROFILING}" = 'true' ]; then
-  echo "Enabling xhprof apache config"
+  $LOUD && echo "Enabling xhprof apache config"
   a2ensite -q 003-xhprof
 fi
 
 # Evaluate composer, decide what extensions are not enabled
-[ -d "${RUNPHP_COMPOSER_PATH}" ] && php /runphp-foundation/bin/startup-extension-check.php
+if [ -d "${RUNPHP_COMPOSER_PATH}" ]; then
+  EXT_CHECK_OUTPUT=$(php /runphp-foundation/bin/startup-extension-check.php)
+  $LOUD && echo "${EXT_CHECK_OUTPUT}"
+fi
 
 # Evaluate if we're in Google Cloud, and record in the environment
-RUNPHP_GOOGLE_CLOUD="$(php /runphp-foundation/bin/startup-check-google-cloud.php)"
-export RUNPHP_GOOGLE_CLOUD
-echo "Google Cloud: $RUNPHP_GOOGLE_CLOUD"
+export RUNPHP_GOOGLE_CLOUD="$(php /runphp-foundation/bin/startup-check-google-cloud.php)"
+$LOUD && echo "Google Cloud: $RUNPHP_GOOGLE_CLOUD"
 if [ "${RUNPHP_GOOGLE_CLOUD}" = 'yes' ]; then
-  RUNPHP_APACHE_STACKDRIVER_LOGS="yes"
-  export RUNPHP_APACHE_STACKDRIVER_LOGS
-  RUNPHP_TRACE_PROJECT="$(php /runphp-foundation/bin/startup-fetch-gcp-project.php)"
-  export RUNPHP_TRACE_PROJECT;
+  export RUNPHP_APACHE_STACKDRIVER_LOGS="yes"
+  export RUNPHP_TRACE_PROJECT="$(php /runphp-foundation/bin/startup-fetch-gcp-project.php)"
 fi
 
 # If we have RUNPHP_EXTRA_ENTRYPOINT_CMD, try and execute it
