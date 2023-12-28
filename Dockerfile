@@ -1,6 +1,6 @@
 ARG TAG_NAME="dev-master"
 
-ARG BUILD_PHP_VER="8.3.0"
+ARG BUILD_PHP_VER="8.3.1"
 ARG BUILD_FOUNDATION_SUFFIX="v0.10.0"
 
 ################################################################################################################
