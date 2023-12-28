@@ -197,7 +197,8 @@ class Runtime
             $arr_trace_parts = explode('/', $this->arr_env[self::ENV_TRACE_HINT]);
             $str_trace_id = $arr_trace_parts[0];
         } else {
-            return 'unknown';
+            // e.g. runphp.658d63c0f16b29.71051412
+            return uniqid('runphp.', true);
         }
         $str_project_id = $this->arr_env[self::ENV_TRACE_PROJECT] ?? '';
         if (empty($str_project_id)) {
