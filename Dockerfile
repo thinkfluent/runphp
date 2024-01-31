@@ -27,9 +27,10 @@ ENV RUNPHP_INDEX_FILE="index.php"
 ENV RUNPHP_VERSION=${TAG_NAME}
 
 # PHP Preloading - "none", "composer-classmap" or "src"
-ENV RUNPHP_PRELOAD_STRATEGY="src"
+ENV RUNPHP_PRELOAD_STRATEGY="none"
 # PHP Preloading - "include" or "compile"
 ENV RUNPHP_PRELOAD_ACTION="include"
+RUN mkdir /var/php-opcache
 
 # Setup the XHprof output dir, install additional libs
 ENV XHPROF_OUTPUT="/tmp/xhprof"

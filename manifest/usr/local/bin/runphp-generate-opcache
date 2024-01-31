@@ -1,0 +1,15 @@
+#!/bin/sh
+set -ex
+
+# Copy in the build-time-only PHP ini file
+cp -p /runphp-foundation/etc/production/opcache-cli-build.ini "$PHP_INI_DIR/conf.d/"
+
+# Run the compile script, which will generate the opcache files
+/usr/local/bin/php /runphp-foundation/bin/build-generate-opcache.php
+
+# Remove the build-time-only PHP ini file
+rm -f "$PHP_INI_DIR/conf.d/opcache-cli-build.ini"
+
+# Copy the ADDITIONAL production-only, cli PHP ini file to where it needs to be to be enabled at startup time
+cp -p /runphp-foundation/etc/production/runphp-production-701-opcache-cli.ini /runphp-foundation/etc/production/php-conf.d/
+

@@ -127,14 +127,38 @@ define `RUNPHP_EXTRA_PREPEND="/some/prepend.php"` in your environment.
 
 If you also enable profiling (see below on how to do this), your prepend file is included in the profile.
 
-### PHP Preloading
+### PHP OPcache Preloading
 
-runphp supports a few PHP preloading strategies, as no one-solution fits all. 
+runphp supports a few PHP preloading strategies, as no one solution fits all. 
 They are controlled via environment variables as follows:
 
+* `RUNPHP_PRELOAD_STRATEGY="src"` - `composer-classmap`, `src`, `paths` or `none` (default)
+* `RUNPHP_PRELOAD_ACTION="compile"` - `include` or `compile` (default)
 * `RUNPHP_COMPOSER_PATH="/app"`
-* `RUNPHP_PRELOAD_STRATEGY="src"` - "none", "composer-classmap" or "src"
-* `RUNPHP_PRELOAD_ACTION="include"` - "include" or "compile"
+* `RUNPHP_PRELOAD_PATHS="/app/src,/app/vendor"` - comma-separated list of paths to recurse & preload
+
+#### CLI and OPcache Preloading
+
+Generally, running a PHP application on the command line will parse all the PHP sources from first principles, as there 
+is no shared memory for OPCache to use between requests (as there is in a web server-like environment).
+
+However, it is possible to configure OPCache to compile the PHP scripts into binary OPcache artefacts, which are stored 
+on disk, and can be used by the CLI to reduce up-front parse time.
+
+Because CloudRun uses an in-memory filesystem, this has the potential to improve cold start times for larger CLI 
+applications where parsing hundreds/thousands of PHP files is undesirable.
+
+In order to take advantage of this strategy, we need to 
+- Configure OPCache to use the filesystem for storing compiled artefacts
+- Compile your application's PHP code during the Docker build process 
+
+There is an additional filesize overhead for the compiled OPcache artefacts, which will vary depending on the size of 
+your application.
+
+To enable this behaviour, you should add the following to your application's Dockerfile:
+```Dockerfile
+RUN 
+```
 
 ### Startup Messages
 runphp can produce a few useful startup messages, such as whether it has detected itself as running on Google Cloud.
