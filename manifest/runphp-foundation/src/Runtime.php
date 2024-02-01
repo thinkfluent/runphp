@@ -124,11 +124,25 @@ class Runtime
     public function profileRequestShutdown(): void
     {
         $str_data = serialize(xhprof_disable());
+        if ('cli' === PHP_SAPI) {
+            $str_type = 'cli';
+            $str_ident_source = $_SERVER['SCRIPT_FILENAME'] ?? '';
+        } else {
+            $str_type = 'http';
+            $str_ident_source = $_SERVER['REQUEST_URI'] ?? '';
+        }
+        $str_ident = preg_replace('#[^A-Za-z0-9]#', '_', $str_ident_source);
+        if (strlen($str_ident) > 150) {
+            $str_ident = substr($str_ident, 0, 118) . '_' . md5($str_ident);
+        }
         file_put_contents(
-            rtrim(getenv('XHPROF_OUTPUT'), '/') . '/' .
-            uniqid() . '.http_' .
-            preg_replace('#[^A-Za-z0-9]#', '_', ($_SERVER['REQUEST_URI'] ?? '')) .
-            '.xhprof',
+            sprintf(
+                '%s/%s.%s_%s.xhprof',
+                rtrim(getenv('XHPROF_OUTPUT'), '/'),
+                uniqid(),
+                $str_type,
+                $str_ident
+            ),
             $str_data
         );
     }

@@ -1,7 +1,7 @@
 ARG TAG_NAME="dev-master"
 
-ARG BUILD_PHP_VER="8.3.1"
-ARG BUILD_FOUNDATION_SUFFIX="v0.10.0"
+ARG BUILD_PHP_VER="8.3.2"
+ARG BUILD_FOUNDATION_SUFFIX="v0.12.1"
 
 ################################################################################################################
 FROM fluentthinking/runphp-foundation:${BUILD_PHP_VER}-${BUILD_FOUNDATION_SUFFIX}

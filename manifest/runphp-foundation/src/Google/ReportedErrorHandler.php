@@ -35,7 +35,7 @@ class ReportedErrorHandler
     public function handleException(\Throwable $obj_thrown)
     {
         $this->handleError(
-            (int) $obj_thrown->getCode(),
+            E_RECOVERABLE_ERROR,
             sprintf(
                 "PHP Warning: %s\nStack trace:\n%s",
                 (string) $obj_thrown,
@@ -84,6 +84,10 @@ class ReportedErrorHandler
         int $int_line = null,
         array $arr_context = []
     ) {
+        // Respect current error_reporting() level
+        if (0 == ($int_errno & error_reporting())) {
+            return;
+        }
         static $arr_error_map = [
             E_WARNING           => 'WARNING',
             E_USER_WARNING      => 'WARNING',

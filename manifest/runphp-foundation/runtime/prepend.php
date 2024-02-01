@@ -30,23 +30,23 @@ if ($obj_runtime->isGoogleCloud()) {
     (new Google\ReportedErrorHandler())->register();
 }
 
-// CLI mode, we're done here...
-if ('cli' === PHP_SAPI) {
-    return;
-}
+// CLI mode, limit web server behaviours
+if ('cli' !== PHP_SAPI) {
+    // Memory & trace data to apache
+    if (function_exists('apache_note')) {
+        register_shutdown_function(function () {
+            $int_peak = memory_get_peak_usage(true);
+            apache_note('php_mem_peak', $int_peak);
+            apache_note('php_mem_peak_mb', sprintf('%.2f', $int_peak / 1024 / 1024));
+            apache_note('gcp_trace_context', Runtime::get()->getTraceContext());
+        });
+    }
 
-// Memory & trace data to apache
-register_shutdown_function(function (){
-    $int_peak = memory_get_peak_usage(true);
-    apache_note('php_mem_peak', $int_peak);
-    apache_note('php_mem_peak_mb', sprintf('%.2f', $int_peak / 1024 / 1024));
-    apache_note('gcp_trace_context', Runtime::get()->getTraceContext());
-});
-
-// In DEV mode, if this is a request for an admin page, load, run & exit.
-if ('/_runphp' === substr($_SERVER['REQUEST_URI'] ?? '', 0, 8) && $obj_runtime->allowAdmin()) {
-    require_once __DIR__ . '/../admin/admin.php';
-    exit();
+    // In DEV mode, if this is a request for an admin page, load, run & exit.
+    if ('/_runphp' === substr($_SERVER['REQUEST_URI'] ?? '', 0, 8) && $obj_runtime->allowAdmin()) {
+        require_once __DIR__ . '/../admin/admin.php';
+        exit();
+    }
 }
 
 // Optional custom prepend file (we do some work ahead of profile start to keep profile clean)

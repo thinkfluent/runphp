@@ -125,7 +125,8 @@ $arr_ext_installed_not_enabled = array_diff($arr_installed, $arr_ext_enabled);
                         <div class="card-body">
                             <h5 class="card-title">Xdebug, Profiling</h5>
                             <p class="card-text">In dev mode, we enable Xdebug for you. Control this via the <code>RUNPHP_MODE</code> environment variable.</p>
-                            <p class="card-text">Performance profiling with XHProf... coming soon!</p>
+                            <p class="card-text">Performance profiling with XHProf</p>
+                            <a class="btn btn-outline-primary" href="/xhprof">Show Profiles</a>
                         </div>
                     </div>
                 </div>
