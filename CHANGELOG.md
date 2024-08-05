@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.16.0] - 2024-08-05
+
+### Changed
+- Bump PHP version, grpc/protobuf extensions
+
 ## [v0.15.0] - 2024-07-03
 
 ### Changed
