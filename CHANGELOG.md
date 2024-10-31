@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.19.0] - 2024-10-31
+
+### Changed
+- Bump PHP version. 8.3.13 latest
+- [Foundation changes](https://github.com/thinkfluent/runphp-foundation/compare/v0.17.0...v0.18.0)
+
+## [v0.18.0] - 2024-10-24
+
+### Changed
+- Bump PHP version. 8.3.12 latest
+- Bump yaml & grpc extensions
+- [Foundation changes](https://github.com/thinkfluent/runphp-foundation/compare/v0.16.0...v0.17.0)
+
+## [v0.17.0] - 2024-09-25
+
+### Changed
+- Bump PHP version. 8.3.11 latest
+- [Foundation changes](https://github.com/thinkfluent/runphp-foundation/compare/v0.15.0...v0.16.0)
+
 ## [v0.16.0] - 2024-08-05
 
 ### Changed
