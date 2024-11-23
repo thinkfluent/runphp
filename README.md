@@ -4,13 +4,14 @@ The `thinkfluent/runphp` toolkit enables rapid application development and serve
 
 Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
-| PHP Version | Latest Image                                    |
-|-------------|-------------------------------------------------|
-| PHP 8.3.13  | `fluentthinking/runphp:8.3.13-v0.19.0` `latest` |
-| PHP 8.2.25  | `fluentthinking/runphp:8.2.25-v0.19.0`          |
-| PHP 8.1.30  | `fluentthinking/runphp:8.1.30-v0.19.0`          |
-| PHP 8.0.30  | `fluentthinking/runphp:8.0.30-v0.19.0`          |
-| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.19.0`          |
+| PHP Version | Latest Image                                   |
+|-------------|------------------------------------------------|
+| PHP 8.4.1   | `fluentthinking/runphp:8.4.1-v0.20.0` `latest` |
+| PHP 8.3.14  | `fluentthinking/runphp:8.3.14-v0.20.0`         |
+| PHP 8.2.26  | `fluentthinking/runphp:8.2.26-v0.20.0`         |
+| PHP 8.1.31  | `fluentthinking/runphp:8.1.31-v0.20.0`         |
+| PHP 8.0.30  | `fluentthinking/runphp:8.0.30-v0.20.0`         |
+| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.20.0`         |
 
 #### Some Benefits of Cloud Run with runphp
 
@@ -87,8 +88,7 @@ runphp has the following key areas of concern:
   * Google-centric PHP extensions built-in, for high performance Google API calls with `grpc` and `protobuf`
   * Automatic integration with Google [Cloud Error Reporting](https://cloud.google.com/error-reporting)
   * Google trace-linked logging (request-grouped log messages in the GCP log viewer). PHP memory and latency data by default.
-    * See https://github.com/thinkfluent/runphp-monolog-formatter 
-  * (coming soon) Optional support for integration with [Google Cloud Trace](https://cloud.google.com/trace) via `opencensus`
+    * See https://github.com/thinkfluent/runphp-monolog-formatter
 * **Composer-oriented Project Tooling**
   * (coming soon) Rapid creation of new projects with `composer create-project`
   * PHP extension detection & automatic enable via `ext-*`
@@ -172,18 +172,9 @@ If you need to build your own base images (this repo)...
 
 ```bash
 docker build \
+  --platform linux/amd64 \
   --build-arg TAG_NAME=dev \
-  --build-arg BUILD_PHP_VER=8.3.13 \
-  --build-arg BUILD_FOUNDATION_SUFFIX=v0.18.0 \
-  -t runphp:dev .
-```
-
-Or, for multi-arch builds
-```bash
-docker buildx build \
-  --platform linux/amd64,linux/arm64 \
-  --build-arg TAG_NAME=dev \
-  --build-arg BUILD_PHP_VER=8.3.13 \
-  --build-arg BUILD_FOUNDATION_SUFFIX=v0.18.0 \
+  --build-arg BUILD_PHP_VER=8.4.1 \
+  --build-arg BUILD_FOUNDATION_SUFFIX=v0.19.0 \
   -t runphp:dev .
 ```
