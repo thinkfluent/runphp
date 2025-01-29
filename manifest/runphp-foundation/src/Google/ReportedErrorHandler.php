@@ -80,8 +80,8 @@ class ReportedErrorHandler
     public function handleError(
         int $int_errno,
         string $str_error,
-        string $str_file = null,
-        int $int_line = null,
+        string $str_file = '',
+        int $int_line = 0,
         array $arr_context = []
     ) {
         // Respect current error_reporting() level
@@ -151,7 +151,7 @@ class ReportedErrorHandler
      * @param array|null $arr_trace
      * @return string
      */
-    protected function getFunctionNameForReport(array $arr_trace = null): string
+    protected function getFunctionNameForReport(?array $arr_trace = null): string
     {
         if (null === $arr_trace) {
             return '<unknown function>';
