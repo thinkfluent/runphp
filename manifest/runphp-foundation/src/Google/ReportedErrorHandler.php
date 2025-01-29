@@ -99,7 +99,7 @@ class ReportedErrorHandler
             E_RECOVERABLE_ERROR => 'ERROR',
         ];
         if (PHP_VERSION_ID < 804000) {
-            $arr_error_map[E_STRICT] = 'INFO';
+            $arr_error_map[2048] = 'INFO'; // E_STRICT
         }
         static $arr_env = [];
         if(empty($arr_env)) {
