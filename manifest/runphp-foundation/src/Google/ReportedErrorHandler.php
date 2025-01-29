@@ -93,12 +93,14 @@ class ReportedErrorHandler
             E_USER_WARNING      => 'WARNING',
             E_NOTICE            => 'NOTICE',
             E_USER_NOTICE       => 'NOTICE',
-            E_STRICT            => 'INFO',
             E_DEPRECATED        => 'INFO',
             E_USER_DEPRECATED   => 'INFO',
             E_USER_ERROR        => 'ERROR',
             E_RECOVERABLE_ERROR => 'ERROR',
         ];
+        if (PHP_VERSION_ID < 804000) {
+            $arr_error_map[E_STRICT] = 'INFO';
+        }
         static $arr_env = [];
         if(empty($arr_env)) {
             $arr_env = Runtime::get()->env();
