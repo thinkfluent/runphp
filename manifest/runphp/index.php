@@ -25,9 +25,13 @@
     <footer class="mt-auto">
         <p class="text-center text-muted">
             <small>
-                <a href="https://github.com/thinkfluent/runphp">runphp</a> by <a href="https://thinkfluent.co.uk">Fluent Thinking Limited</a>
+                <a href="https://github.com/thinkfluent/runphp">runphp</a> by <a href="https://x.com/tom_walder">Tom Walder</a>, <a href="https://thinkfluent.co.uk">Fluent Thinking Limited</a>
             </small>
         </p>
+        <p class="text-center text-muted">
+            <small>
+                <a href="https://frankenphp.dev/">FrankenPHP</a> by <a href="https://dunglas.dev/">Kévin Dunglas</a>
+            </small>
     </footer>
 </div>
 </body>

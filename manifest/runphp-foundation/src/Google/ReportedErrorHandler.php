@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ThinkFluent\RunPHP\Google;
 
 use ThinkFluent\RunPHP\Runtime;
@@ -13,12 +15,12 @@ use ThinkFluent\RunPHP\Runtime;
  */
 class ReportedErrorHandler
 {
-    const DTM_FORMAT = 'Y-m-d\TH:i:s.u\Z';
+    private const string DTM_FORMAT = 'Y-m-d\TH:i:s.u\Z';
 
     /**
      * Register various handlers
      */
-    public function register()
+    public function register(): void
     {
         register_shutdown_function([$this, 'handleShutdown']);
         set_error_handler([$this, 'handleError'], E_ALL);
@@ -32,7 +34,7 @@ class ReportedErrorHandler
      *
      * @param \Throwable $obj_thrown
      */
-    public function handleException(\Throwable $obj_thrown)
+    public function handleException(\Throwable $obj_thrown): void
     {
         $this->handleError(
             E_RECOVERABLE_ERROR,
@@ -56,7 +58,7 @@ class ReportedErrorHandler
      * The following types cannot be caught by set_error_handler(), so deal with them on shutdown
      * https://www.php.net/manual/en/function.set-error-handler
      */
-    public function handleShutdown()
+    public function handleShutdown(): void
     {
         $arr_error = error_get_last();
         $int_types = E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING;
@@ -80,10 +82,10 @@ class ReportedErrorHandler
     public function handleError(
         int $int_errno,
         string $str_error,
-        string $str_file = null,
-        int $int_line = null,
+        ?string $str_file = null,
+        ?int $int_line = null,
         array $arr_context = []
-    ) {
+    ): void {
         // Respect current error_reporting() level
         if (0 == ($int_errno & error_reporting())) {
             return;
@@ -93,12 +95,14 @@ class ReportedErrorHandler
             E_USER_WARNING      => 'WARNING',
             E_NOTICE            => 'NOTICE',
             E_USER_NOTICE       => 'NOTICE',
-            E_STRICT            => 'INFO',
             E_DEPRECATED        => 'INFO',
             E_USER_DEPRECATED   => 'INFO',
             E_USER_ERROR        => 'ERROR',
             E_RECOVERABLE_ERROR => 'ERROR',
         ];
+        if (PHP_VERSION_ID < 80400) {
+            $arr_error_map[2048] = 'INFO'; // E_STRICT
+        }
         static $arr_env = [];
         if(empty($arr_env)) {
             $arr_env = Runtime::get()->env();
@@ -151,7 +155,7 @@ class ReportedErrorHandler
      * @param array|null $arr_trace
      * @return string
      */
-    protected function getFunctionNameForReport(array $arr_trace = null): string
+    protected function getFunctionNameForReport(?array $arr_trace = null): string
     {
         if (null === $arr_trace) {
             return '<unknown function>';

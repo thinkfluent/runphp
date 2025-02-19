@@ -4,14 +4,22 @@ The `thinkfluent/runphp` toolkit enables rapid application development and serve
 
 Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
-| PHP Version | Latest Image                                   |
-|-------------|------------------------------------------------|
-| PHP 8.4.2   | `fluentthinking/runphp:8.4.2-v0.21.0` `latest` |
-| PHP 8.3.15  | `fluentthinking/runphp:8.3.15-v0.21.0`         |
-| PHP 8.2.27  | `fluentthinking/runphp:8.2.27-v0.21.0`         |
-| PHP 8.1.31  | `fluentthinking/runphp:8.1.31-v0.21.0`         |
-| PHP 8.0.30  | `fluentthinking/runphp:8.0.30-v0.21.0`         |
-| PHP 7.4.33  | `fluentthinking/runphp:7.4.33-v0.21.0`         |
+
+| PHP Version | Latest Image                                             |
+|-------------|----------------------------------------------------------|
+| PHP 8.4.4   | `fluentthinking/runphp:v0.23.0-frankenphp1.4.3-php8.4.4` `frankenphp-latest` |
+| PHP 8.3.17  | `fluentthinking/runphp:v0.23.0-frankenphp1.4.3-php8.3.17` |
+| PHP 8.2.27  | `fluentthinking/runphp:v0.23.0-frankenphp1.4.3-php8.2.27` |
+
+
+| PHP Version | Latest Image                        |
+|------------|-------------------------------------|
+| PHP 8.4.4  | `fluentthinking/runphp:8.4.4-v0.23.0` `latest` |
+| PHP 8.3.17  | `fluentthinking/runphp:8.3.17-v0.23.0` |
+| PHP 8.2.27 | `fluentthinking/runphp:8.2.27-v0.23.0` |
+| PHP 8.1.31 | `fluentthinking/runphp:8.1.31-v0.23.0` |
+| PHP 8.0.30 | `fluentthinking/runphp:8.0.30-v0.23.0` |
+| PHP 7.4.33 | `fluentthinking/runphp:7.4.33-v0.23.0` |
 
 #### Some Benefits of Cloud Run with runphp
 
@@ -24,14 +32,13 @@ Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
 ### The Vanilla Build
 
-This should start a local instance of the default runphp image.
-```bash
-docker run --rm -e "RUNPHP_MODE=development" -e "PORT=80" -p 8080:80 fluentthinking/runphp:latest
-```
+Start a local instance of the default runphp image.
 
-You should be able to access the default home page and admin interfaces as follows:
-* http://localhost:8080
-* http://localhost:8080/_runphp
+Localhost - http://localhost:8080 http://localhost:8080/_runphp
+With OrbStack (HTTPS proxy built in) - https://runphp.orb.local https://runphp.orb.local/_runphp
+```bash
+docker run --rm --name runphp -e "RUNPHP_MODE=development" -p 8080:8080 runphp:frankendev
+```
 
 ### Building Your Own Application
 
@@ -70,6 +77,7 @@ gcloud run deploy <cloud-run-service-name> \
     --image=eu.gcr.io/<google-project>/myapp:latest \
     --platform managed \
     --allow-unauthenticated \
+    --use-http2 \
     --set-env-vars "RUNPHP_MODE=development" \
     --region europe-west1 \
     --project <google-project>
@@ -173,8 +181,8 @@ If you need to build your own base images (this repo)...
 ```bash
 docker build \
   --platform linux/amd64 \
-  --build-arg TAG_NAME=dev \
-  --build-arg BUILD_PHP_VER=2 \
-  --build-arg BUILD_FOUNDATION_SUFFIX=v0.20.0 \
-  -t runphp:dev .
+  --build-arg TAG_NAME=frankendev \
+  --build-arg BUILD_PHP_VER=8.4.2 \
+  --build-arg BUILD_FOUNDATION_SUFFIX=v0.21.0-frankenphp \
+  -t runphp:frankendev .
 ```

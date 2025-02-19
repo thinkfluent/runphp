@@ -71,7 +71,7 @@ $arr_ext_installed_not_enabled = array_diff($arr_installed, $arr_ext_enabled);
             <span class="badge badge-pill badge-secondary">mode: <?php echo $obj_runtime->getMode(); ?></span>
             <span class="badge badge-pill badge-secondary">foundation: <?php echo $obj_runtime->getFoundationVersion(); ?></span>
             <span class="badge badge-pill badge-secondary">runphp: <?php echo $obj_runtime->getVersion(); ?></span>
-            <span class="badge badge-pill badge-secondary">PHP: <?php echo $obj_runtime->env()['PHP_VERSION']; ?></span>
+            <span class="badge badge-pill badge-secondary"><?php echo shell_exec('frankenphp -v'); ?></span>
         </div>
         <div class="row mb-3">
             <div class="col">
@@ -156,9 +156,13 @@ $arr_ext_installed_not_enabled = array_diff($arr_installed, $arr_ext_enabled);
     <footer class="mt-auto">
         <p class="text-center text-muted">
             <small>
-                <a href="https://github.com/thinkfluent/runphp">runphp</a> by <a href="https://thinkfluent.co.uk">Fluent Thinking Limited</a>
+                <a href="https://github.com/thinkfluent/runphp">runphp</a> by <a href="https://x.com/tom_walder">Tom Walder</a>, <a href="https://thinkfluent.co.uk">Fluent Thinking Limited</a>
             </small>
         </p>
+        <p class="text-center text-muted">
+            <small>
+                <a href="https://frankenphp.dev/">FrankenPHP</a> by <a href="https://dunglas.dev/">Kévin Dunglas</a>
+            </small>
     </footer>
 </div>
 </body>

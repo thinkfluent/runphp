@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ThinkFluent\RunPHP\Google;
 
 /**
@@ -15,9 +17,9 @@ namespace ThinkFluent\RunPHP\Google;
 class Metadata
 {
 
-    const TIMEOUT_SECS = 2;
+    private const int TIMEOUT_SECS = 2;
 
-    const METADATA_HOST = 'metadata.google.internal';
+    private const string METADATA_HOST = 'metadata.google.internal';
 
     /**
      * @var bool
