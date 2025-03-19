@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.24.0] - 2025-03-19
+
+### Added
+- Bump PHP version. 8.4.5 latest
+
+## [v0.23.1] - 2025-03-02
+
+### Fixed
+- Pin grpc to v1.64.1
+
 ## [v0.23.0] - 2025-02-19
 
 ### Added
