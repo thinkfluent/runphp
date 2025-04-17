@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.25.0] - 2025-04-17
+
+### Added
+- Bump PHP versions. 8.4.6 latest
+
 ## [v0.24.0] - 2025-03-19
 
 ### Added
