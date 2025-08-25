@@ -6,12 +6,12 @@ Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
 | PHP Version | Images                               | PHP Status |
 |----------|---------------------------------------|------------------|
-| PHP 8.4.8 | `fluentthinking/runphp:8.4.8-v0.27.0` `latest` | Active |
-| PHP 8.3.22 | `fluentthinking/runphp:8.3.22-v0.27.0` | Active |
-| PHP 8.2.28 | `fluentthinking/runphp:8.2.28-v0.27.0` | Security only |
-| PHP 8.1.32 | `fluentthinking/runphp:8.1.32-v0.27.0` | Security only |
-| PHP 8.0.30 | `fluentthinking/runphp:8.0.30-v0.27.0` | EOL |
-| PHP 7.4.33 | `fluentthinking/runphp:7.4.33-v0.27.0` | EOL |
+| PHP 8.4.11 | `fluentthinking/runphp:8.4.11-v0.28.0` `latest` | Active |
+| PHP 8.3.24 | `fluentthinking/runphp:8.3.24-v0.28.0` | Active |
+| PHP 8.2.29 | `fluentthinking/runphp:8.2.29-v0.28.0` | Security only |
+| PHP 8.1.33 | `fluentthinking/runphp:8.1.33-v0.28.0` | Security only |
+| PHP 8.0.30 | `fluentthinking/runphp:8.0.30-v0.28.0` | EOL |
+| PHP 7.4.33 | `fluentthinking/runphp:7.4.33-v0.28.0` | EOL |
 
 #### Some Benefits of Cloud Run with runphp
 
@@ -174,7 +174,7 @@ If you need to build your own base images (this repo)...
 docker build \
   --platform linux/amd64 \
   --build-arg TAG_NAME=dev \
-  --build-arg BUILD_PHP_VER=2 \
-  --build-arg BUILD_FOUNDATION_SUFFIX=v0.26.0 \
+  --build-arg BUILD_PHP_VER=8.4.11 \
+  --build-arg BUILD_FOUNDATION_SUFFIX=v0.27.0 \
   -t runphp:dev .
 ```
