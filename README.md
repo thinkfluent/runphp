@@ -6,11 +6,11 @@ Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
 | PHP Version | Latest Image                                            |
 |------------|----------------------------------------------------------|
-| PHP 8.4.12 | `fluentthinking/runphp:v1.0.0-frankenphp1.9.1-php8.4.12` `latest` `frankenphp-latest` |
-| PHP 8.3.25 | `fluentthinking/runphp:v1.0.0-frankenphp1.9.1-php8.3.25` |
-| PHP 8.2.29 | `fluentthinking/runphp:v1.0.0-frankenphp1.9.1-php8.2.29` |
+| PHP 8.4.12 | `fluentthinking/runphp:20250921b-frankenphp1.9.1-php8.4.12` `frankenphp-latest` |
+| PHP 8.3.25 | `fluentthinking/runphp:20250921b-frankenphp1.9.1-php8.3.25` |
+| PHP 8.2.29 | `fluentthinking/runphp:20250921b-frankenphp1.9.1-php8.2.29` |
 
-Looking for the older **Apache based images?** See the [v0.x branch]()
+Looking for the **Apache based images?** See the [master branch](https://github.com/thinkfluent/runphp)
 
 ## Why RunPHP?
 
@@ -19,8 +19,6 @@ Looking for the older **Apache based images?** See the [v0.x branch]()
 - Google Cloud Logging compatible JSON log format
 - Google Cloud integrations (Error Reporting, Trace) with [runphp-monolog-formatter](https://github.com/thinkfluent/runphp-monolog-formatter)
 - Extensions for best use of Google APIs (`grpc`, `protobuf`) pre-installed
-
- 
 - Auto-detected context-aware (local development vs Google Cloud) behaviour
 - Opcache configuration optimised for serverless environments
 - PHP error, exception and shutdown handlers with Google Cloud Error Reporting integration
@@ -84,28 +82,20 @@ gcloud run deploy <cloud-run-service-name> \
     --use-http2 \
     --set-env-vars "RUNPHP_MODE=development" \
     --region europe-west1 \
+    --use-http2 \
     --project <google-project>
 ```
-`--use-http2` is recommended for FrankenPHP based images
+
+`--use-http2` is recommended for FrankenPHP based images, as it enables HTTP/2 cleartext (h2c) support.
 
 ## Components
 runphp has the following key areas of concern:
 
-* **Foundation Docker Image**
-  * Based on upstream `php:?.?-apache`
-  * Apache configurations tweaks including remote IP fixes for `X-Forwarded-For`, security options etc.
-  * A useful default set of PHP extensions
-  * Extensible (Docker!) if you need to run custom images or add further extension
-  * https://github.com/thinkfluent/runphp-foundation 
 * **Google Cloud Integrations**
   * Google-centric PHP extensions built-in, for high performance Google API calls with `grpc` and `protobuf`
   * Automatic integration with Google [Cloud Error Reporting](https://cloud.google.com/error-reporting)
   * Google trace-linked logging (request-grouped log messages in the GCP log viewer). PHP memory and latency data by default.
     * See https://github.com/thinkfluent/runphp-monolog-formatter
-* **Composer-oriented Project Tooling**
-  * (coming soon) Rapid creation of new projects with `composer create-project`
-  * PHP extension detection & automatic enable via `ext-*`
-  * PHP preloading from Composer class map (or other sources) for high performance in production
 * **Getting-started Admin Interface**
   * Simple admin UI, with phpinfo, opcache inspection
 * **Request Profiling**
@@ -124,13 +114,6 @@ If you want to do additional work on container startup, you can
 * Replace the entrypoint, but make sure you execute `docker-runphp-entrypoint` at the end of your script.
   * We've included an example entrypoint script at [manifest/usr/local/bin/docker-custom-entrypoint](/runphp/thinkfluent/runphp/blob/master/manifest/usr/local/bin/docker-custom-entrypoint)
 
-### Apache
-
-If you want to roll your own apache configs, you can disable the runphp sites in your Dockerfile with
-```
-RUN a2dissite 002-runphp
-``` 
-
 ### PHP Prepend
 
 runphp takes advantage of the PHP `auto_prepend_file` ini control to provide some of its features.
@@ -139,15 +122,6 @@ If you want to provide an additional prepend file, without losing the runphp sta
 define `RUNPHP_EXTRA_PREPEND="/some/prepend.php"` in your environment.
 
 If you also enable profiling (see below on how to do this), your prepend file is included in the profile.
-
-### PHP Preloading
-
-runphp supports a few PHP preloading strategies, as no one-solution fits all. 
-They are controlled via environment variables as follows:
-
-* `RUNPHP_COMPOSER_PATH="/app"`
-* `RUNPHP_PRELOAD_STRATEGY="src"` - "none", "composer-classmap" or "src"
-* `RUNPHP_PRELOAD_ACTION="include"` - "include" or "compile"
 
 ### Startup Messages
 runphp can produce a few useful startup messages, such as whether it has detected itself as running on Google Cloud.
@@ -187,7 +161,6 @@ If you need to build your own base images (this repo)...
 docker build \
   --platform linux/amd64 \
   --build-arg TAG_NAME=frankendev \
-  --build-arg BUILD_PHP_VER=8.4.2 \
-  --build-arg BUILD_FOUNDATION_SUFFIX=v0.21.0-frankenphp \
+  --build-arg BUILD_PHP_VER=8.4.12 \
   -t runphp:frankendev .
 ```
