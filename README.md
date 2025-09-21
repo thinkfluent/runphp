@@ -1,25 +1,29 @@
-# Serverless PHP Toolkit for Google Cloud Run
+# FrankenPHP for Google Cloud Run
 
-The `thinkfluent/runphp` toolkit enables rapid application development and serverless hosting on [Google Cloud Run](https://cloud.google.com/run).
+The `thinkfluent/runphp` toolkit empowers serverless hosting on [Google Cloud Run](https://cloud.google.com/run) with [FrankenPHP](https://frankenphp.dev/).
 
 Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
+| PHP Version | Latest Image                                            |
+|------------|----------------------------------------------------------|
+| PHP 8.4.12 | `fluentthinking/runphp:v1.0.0-frankenphp1.9.1-php8.4.12` `latest` `frankenphp-latest` |
+| PHP 8.3.25 | `fluentthinking/runphp:v1.0.0-frankenphp1.9.1-php8.3.25` |
+| PHP 8.2.29 | `fluentthinking/runphp:v1.0.0-frankenphp1.9.1-php8.2.29` |
 
-| PHP Version | Latest Image                                             |
-|-------------|----------------------------------------------------------|
-| PHP 8.4.4   | `fluentthinking/runphp:v0.23.0-frankenphp1.4.3-php8.4.4` `frankenphp-latest` |
-| PHP 8.3.17  | `fluentthinking/runphp:v0.23.0-frankenphp1.4.3-php8.3.17` |
-| PHP 8.2.27  | `fluentthinking/runphp:v0.23.0-frankenphp1.4.3-php8.2.27` |
+Looking for the older **Apache based images?** See the [v0.x branch]()
 
+## Why RunPHP?
 
-| PHP Version | Latest Image                        |
-|------------|-------------------------------------|
-| PHP 8.4.4  | `fluentthinking/runphp:8.4.4-v0.23.0` `latest` |
-| PHP 8.3.17  | `fluentthinking/runphp:8.3.17-v0.23.0` |
-| PHP 8.2.27 | `fluentthinking/runphp:8.2.27-v0.23.0` |
-| PHP 8.1.31 | `fluentthinking/runphp:8.1.31-v0.23.0` |
-| PHP 8.0.30 | `fluentthinking/runphp:8.0.30-v0.23.0` |
-| PHP 7.4.33 | `fluentthinking/runphp:7.4.33-v0.23.0` |
+- [FrankenPHP](https://frankenphp.dev/) - The Modern PHP App Server, written in Go (based on [Caddy](https://caddyserver.com/))
+- Caddy optimised for Cloud Run (HTTP/2 cleartext, port configuration)
+- Google Cloud Logging compatible JSON log format
+- Google Cloud integrations (Error Reporting, Trace) with [runphp-monolog-formatter](https://github.com/thinkfluent/runphp-monolog-formatter)
+- Extensions for best use of Google APIs (`grpc`, `protobuf`) pre-installed
+
+ 
+- Auto-detected context-aware (local development vs Google Cloud) behaviour
+- Opcache configuration optimised for serverless environments
+- PHP error, exception and shutdown handlers with Google Cloud Error Reporting integration
 
 #### Some Benefits of Cloud Run with runphp
 
@@ -82,6 +86,7 @@ gcloud run deploy <cloud-run-service-name> \
     --region europe-west1 \
     --project <google-project>
 ```
+`--use-http2` is recommended for FrankenPHP based images
 
 ## Components
 runphp has the following key areas of concern:

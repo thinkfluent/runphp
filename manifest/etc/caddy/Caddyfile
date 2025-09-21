@@ -1,80 +1,101 @@
 {
-    {$CADDY_GLOBAL_OPTIONS}
+	{$CADDY_GLOBAL_OPTIONS}
 
-    # For Cloud Run, we do NOT terminate TLS, but want to offer end-to-end HTTP/2 cleartext
-    # https://cloud.google.com/run/docs/configuring/http2
-    servers {
-        protocols h1 h2c
-    }
+	# Disable any HTTPS stuff for Cloud Run
+	auto_https off
 
-    http_port {$PORT:8080}
+	# Turn off admin endpoint in production
+	admin off
+	persist_config off
 
-    # Disable any HTTPS stuff for Cloud Run
-    auto_https off
-    auto_https disable_redirects
+	# For Cloud Run, we do NOT terminate TLS, but want to offer end-to-end HTTP/2 cleartext
+	# https://cloud.google.com/run/docs/configuring/http2
+	servers {
+		protocols h1 h2c
+	}
 
-    frankenphp {
-        #worker /path/to/your/worker.php
-        {$FRANKENPHP_CONFIG}
-    }
+	http_port {$PORT:8080}
+
+	frankenphp {
+		#worker /path/to/your/worker.php
+		{$FRANKENPHP_CONFIG}
+	}
+
+	log default {
+		format json {
+			message_key message
+			level_key severity
+			time_key timestamp
+			name_key channel
+			caller_key function
+			stacktrace_key stack_trace
+			time_format iso8601
+			duration_format "ms"
+			# GCP seems to ingest these OK i.e. WARN seems OK, not WARNING
+			level_format "upper"
+		}
+	}
 }
 
 {$CADDY_EXTRA_CONFIG}
 
-# We are not terminating TLS, so include the "http://" prefix
+# We are not terminating TLS on Cloud Run, so include the "http://" prefix
 # A blank server name will match all requests, which we want to Cloud Run and named services, custom domains, etc.
 http://{$SERVER_NAME:}:{$PORT:8080} {
-    #log {
-    #       # Redact the authorization query parameter that can be set by Mercure
-    #       format filter {
-    #           request>uri query {
-    #               replace authorization REDACTED
-    #           }
-    #       }
-    #}
+	#log {
+	#	# Redact the authorization query parameter that can be set by Mercure
+	#	format filter {
+	#		request>uri query {
+	#			replace authorization REDACTED
+	#		}
+	#	}
+	#}
 
-    # Application public source
-    root * {$RUNPHP_DOC_ROOT}
+	# Application public source
+	root * {$RUNPHP_DOC_ROOT}
 
-    # Compression - Zstandard, brotli, gzip
-    encode zstd br gzip
+	# Compression - Zstandard, brotli, gzip
+	encode zstd br gzip
 
-    # Uncomment the following lines to enable Mercure and Vulcain modules
-    #mercure {
-    #       # Transport to use (default to Bolt)
-    #       transport_url {$MERCURE_TRANSPORT_URL:bolt:///data/mercure.db}
-    #       # Publisher JWT key
-    #       publisher_jwt {env.MERCURE_PUBLISHER_JWT_KEY} {env.MERCURE_PUBLISHER_JWT_ALG}
-    #       # Subscriber JWT key
-    #       subscriber_jwt {env.MERCURE_SUBSCRIBER_JWT_KEY} {env.MERCURE_SUBSCRIBER_JWT_ALG}
-    #       # Allow anonymous subscribers (double-check that it's what you want)
-    #       anonymous
-    #       # Enable the subscription API (double-check that it's what you want)
-    #       subscriptions
-    #       # Extra directives
-    #       {$MERCURE_EXTRA_DIRECTIVES}
-    #}
-    #vulcain
+	# Uncomment the following lines to enable Mercure and Vulcain modules
+	#mercure {
+	#	# Transport to use (default to Bolt)
+	#	transport_url {$MERCURE_TRANSPORT_URL:bolt:///data/mercure.db}
+	#	# Publisher JWT key
+	#	publisher_jwt {env.MERCURE_PUBLISHER_JWT_KEY} {env.MERCURE_PUBLISHER_JWT_ALG}
+	#	# Subscriber JWT key
+	#	subscriber_jwt {env.MERCURE_SUBSCRIBER_JWT_KEY} {env.MERCURE_SUBSCRIBER_JWT_ALG}
+	#	# Allow anonymous subscribers (double-check that it's what you want)
+	#	anonymous
+	#	# Enable the subscription API (double-check that it's what you want)
+	#	subscriptions
+	#	# Extra directives
+	#	{$MERCURE_EXTRA_DIRECTIVES}
+	#}
+	#vulcain
 
-    {$CADDY_SERVER_EXTRA_DIRECTIVES}
+	{$CADDY_SERVER_EXTRA_DIRECTIVES}
 
-    # We need to customise the `php_server` directive (difference index)
-    route {
-        # Add trailing slash for directory requests
-        @canonicalPath {
-            file {path}/index.php
-            not path */
-        }
-        redir @canonicalPath {path}/ 308
-        # If the requested file does not exist, try index files
-        @indexFiles file {
-            try_files {path} {path}/{$RUNPHP_INDEX_FILE} {$RUNPHP_INDEX_FILE}
-            split_path .php
-        }
-        rewrite @indexFiles {http.matchers.file.relative}
-        # FrankenPHP!
-        @phpFiles path *.php
-        php @phpFiles
-        file_server
-    }
+	# We need to customise the `php_server` directive (variant try_files)
+	route {
+		# Optional XHProf config must be inside the route directive to ensure priority
+		{$RUNPHP_XHPROF_CADDY_CONFIG}
+
+		# Add trailing slash for directory requests
+		@canonicalPath {
+			file {path}/index.php
+			not path */
+		}
+		redir @canonicalPath {path}/ 308
+		# If the requested file does not exist, try index files
+		@indexFiles file {
+			try_files {path} {path}/{$RUNPHP_INDEX_FILE} {$RUNPHP_INDEX_FILE}
+			split_path .php
+		}
+		rewrite @indexFiles {http.matchers.file.relative}
+		# FrankenPHP!
+		@phpFiles path *.php
+		php @phpFiles
+		file_server
+	}
 }

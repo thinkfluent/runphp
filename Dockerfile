@@ -1,11 +1,31 @@
+# Default build versions
+ARG BUILD_FRANKENPHP_VER="1.9.1"
+ARG BUILD_PHP_VER="8.4.12"
 ARG TAG_NAME="dev-master"
 
-ARG BUILD_FRANKENPHP_VER="1.4.2"
-ARG BUILD_PHP_VER="8.4.3"
-ARG BUILD_FOUNDATION_SUFFIX="v0.22.0"
+################################################################################################################
+FROM dunglas/frankenphp:${BUILD_FRANKENPHP_VER}-php${BUILD_PHP_VER} as foundation
+# Extensions we'd like to add by default
+ARG PHP_EXT_ESSENTIAL="bcmath opcache mysqli pdo_mysql bz2 soap sockets zip gd intl yaml apcu protobuf memcached redis xhprof grpc"
+ARG TAG_NAME
+
+# Workaround for noisy pecl E_STRICT
+RUN sed -i '1 s/^.*$/<?php error_reporting(E_ALL ^ (E_DEPRECATED));/' /usr/local/lib/php/pearcmd.php
+
+# Additional extensions here:
+# frankenphp provides
+# https://github.com/mlocati/docker-php-extension-installer
+# Which ensures extensions are stripped of strings (small) and should not carry any extra 'dev' package weight
+RUN install-php-extensions ${PHP_EXT_ESSENTIAL}
+ENV IPE_DONT_ENABLE=1
+RUN install-php-extensions xdebug
+
+# TODO - GD with jpeg, webp, freetype
+
+ENV RUNPHP_FOUNDATION_VERSION=${TAG_NAME}
 
 ################################################################################################################
-FROM fluentthinking/runphp-foundation:${BUILD_FOUNDATION_SUFFIX}-frankenphp${BUILD_FRANKENPHP_VER}-php${BUILD_PHP_VER}
+FROM foundation
 ARG TAG_NAME
 
 # Let's get up to date
@@ -18,34 +38,19 @@ RUN mkdir -p /tmp/xhprof && \
     apt-get install -y graphviz && \
     apt-get clean
 
-
-
-# Install our code, then switch from foundation to our runphp site
+# Install our manifest
 COPY ./manifest /
-#RUN a2dissite 001-runphp-foundation && a2ensite 002-runphp && a2disconf other-vhosts-access-log
-
-
-# TODO log format update \
-#       NOT for access logs (Cloud Run will take care of that)
-#       BUT for "other" logs (e.g. startup logs/messages)
-# https://caddy.community/t/google-cloud-structured-logging-format/12678/8
-
 
 # Install profile viewer
-RUN curl https://github.com/thinkfluent/xhprof/archive/master.tar.gz --silent --location --output /tmp/xhprof.tgz && \
+RUN curl https://github.com/thinkfluent/xhprof/archive/feature/frankenphp.tar.gz --silent --location --output /tmp/xhprof.tgz && \
     tar xfz /tmp/xhprof.tgz -C /tmp/ && \
-    mv /tmp/xhprof-master/* /runphp-foundation/admin/xhprof && \
+    mv /tmp/xhprof-feature-frankenphp/* /runphp-foundation/admin/xhprof && \
     rm -rf /tmp/xhprof.tgz
-
-# So we can handle signals properly (Cloud Run will send a SIGTERM)
-# Re-map SIGTERM to SIGWINCH for graceful apache shutdown
-# https://cloud.google.com/blog/topics/developers-practitioners/graceful-shutdowns-cloud-run-deep-dive
-# ENTRYPOINT ["/usr/bin/dumb-init", "--rewrite", "15:28", "docker-runphp-entrypoint"]
 
 # Use our custom entrypoint (which does some dev vs prod config changes & extracts Google Cloud context)
 ENTRYPOINT ["docker-runphp-entrypoint"]
 
-# Run frankenphp on startup
+# Run frankenphp on startup using the runphp Caddyfile
 CMD ["--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
 
 # Do some baseline setup for runphp

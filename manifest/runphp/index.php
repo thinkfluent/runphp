@@ -13,7 +13,7 @@
     <header class="mb-auto"></header>
     <main class="inner text-center">
         <h1 class="display-4 mb-3">thinkfluent/runphp</h1>
-        <h3 class="display-5 mb-4">Serverless PHP Toolkit for Google Cloud Run</h3>
+        <h3 class="display-5 mb-4">Serverless FrankenPHP for Google Cloud Run</h3>
         <div>
             <svg id="cloud-run-logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 231">
                 <path d="M75.39 0a23.1 23.1 0 0 0-19.72 11.76L3.054 102.995a22.96 22.96 0 0 0 0 22.879l52.598 91.997a23.54 23.54 0 0 0 19.719 12.18h105.216a23.462 23.462 0 0 0 19.74-12.12l52.598-91.477a23.441 23.441 0 0 0 3.074-11.61c0-4.004-1.025-8.01-3.074-11.61L200.326 11.76A23.118 23.118 0 0 0 180.606 0H75.39z" fill="#4285F4"/>

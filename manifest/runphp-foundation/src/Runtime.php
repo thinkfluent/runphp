@@ -5,11 +5,11 @@ namespace ThinkFluent\RunPHP;
 class Runtime
 {
 
-    public const
+    public const string
         MODE_DEV = 'development',
         MODE_PROD = 'production';
 
-    public const
+    public const string
         ENV_MODE = 'RUNPHP_MODE',
         ENV_VERSION = 'RUNPHP_VERSION',
         ENV_FOUNDATION_VERSION = 'RUNPHP_FOUNDATION_VERSION',
@@ -20,11 +20,11 @@ class Runtime
         ENV_TRACE_HINT = 'RUNPHP_TRACE_CONTEXT_HINT',
         ENV_TRACE_PROJECT = 'RUNPHP_TRACE_PROJECT';
 
-    public const
+    public const string
         ENV_TRUE = 'true',
         ENV_YES = 'yes';
 
-    public const
+    public const string
         SERVER_TRACE_CONTEXT_HEADER = 'HTTP_X_CLOUD_TRACE_CONTEXT';
 
     /**

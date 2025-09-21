@@ -24,13 +24,31 @@ class ReportedErrorHandler
     {
         register_shutdown_function([$this, 'handleShutdown']);
         set_error_handler([$this, 'handleError'], E_ALL);
-        set_exception_handler([$this, 'handleException']);
+        set_exception_handler([$this, 'uncaughtException']);
     }
 
     /**
-     * Handle an 'Exception'
-     *
-     * Produced message string must start with PHP (Notice|Parse error|Fatal error|Warning)
+     * Handle an uncaught Exception
+     */
+    public function uncaughtException(\Throwable $obj_thrown): void
+    {
+        $this->handleError(
+            E_ERROR,
+            sprintf("Uncaught %s: %s", get_class($obj_thrown), $obj_thrown->getMessage()),
+            $obj_thrown->getFile(),
+            $obj_thrown->getLine(),
+            [
+                'function' => $this->getFunctionNameForReport($obj_thrown->getTrace()),
+                'exception' => $obj_thrown,
+            ],
+            // And now a stack trace that will be parsed by Google
+            // Must be prefixed with "PHP (Notice|Parse error|Fatal error|Warning): "
+            'PHP Fatal error: Uncaught ' . (string) $obj_thrown
+        );
+    }
+
+    /**
+     * Handle an Exception (convenience method)
      *
      * @param \Throwable $obj_thrown
      */
@@ -38,17 +56,16 @@ class ReportedErrorHandler
     {
         $this->handleError(
             E_RECOVERABLE_ERROR,
-            sprintf(
-                "PHP Warning: %s\nStack trace:\n%s",
-                (string) $obj_thrown,
-                $obj_thrown->getTraceAsString()
-            ),
+            sprintf("%s: %s", get_class($obj_thrown), $obj_thrown->getMessage()),
             $obj_thrown->getFile(),
             $obj_thrown->getLine(),
             [
                 'function' => $this->getFunctionNameForReport($obj_thrown->getTrace()),
                 'exception' => $obj_thrown,
-            ]
+            ],
+            // And now a stack trace that will be parsed by Google
+            // Must be prefixed with "PHP (Notice|Parse error|Fatal error|Warning): "
+            'PHP Warning: ' . (string) $obj_thrown
         );
     }
 
@@ -84,7 +101,8 @@ class ReportedErrorHandler
         string $str_error,
         ?string $str_file = null,
         ?int $int_line = null,
-        array $arr_context = []
+        array $arr_context = [],
+        ?string $str_stack_trace = null
     ): void {
         // Respect current error_reporting() level
         if (0 == ($int_errno & error_reporting())) {
@@ -99,6 +117,7 @@ class ReportedErrorHandler
             E_USER_DEPRECATED   => 'INFO',
             E_USER_ERROR        => 'ERROR',
             E_RECOVERABLE_ERROR => 'ERROR',
+            E_ERROR             => 'ERROR',
         ];
         if (PHP_VERSION_ID < 80400) {
             $arr_error_map[2048] = 'INFO'; // E_STRICT
@@ -115,7 +134,7 @@ class ReportedErrorHandler
             '@type' => 'type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent',
             "eventTime" => (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format(self::DTM_FORMAT),
             "severity" => $str_severity,
-            "serviceContext" => (object)[
+            "serviceContext" => [
                 "service" => $arr_env['K_SERVICE'] ?? 'unknown',
                 "version" => $arr_env['K_REVISION'] ?? 'unknown',
             ],
@@ -141,6 +160,9 @@ class ReportedErrorHandler
             $arr_payload['logging.googleapis.com/trace'] = \ThinkFluent\RunPHP\Runtime::get()->getTraceContext();
         } catch (\Throwable $obj_thrown) {
             // swallow
+        }
+        if (!empty($str_stack_trace)) {
+            $arr_payload['stack_trace'] = $str_stack_trace;
         }
         file_put_contents('php://stderr', json_encode($arr_payload) . PHP_EOL);
     }

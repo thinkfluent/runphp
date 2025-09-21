@@ -19,10 +19,13 @@ else
   . runphp-set-mode-production
 fi
 
-# Enable apache config for xhprof
+# Enable caddy routing for xhprof
 if [ "${RUNPHP_XHPROF_PROFILING}" = 'yes' ] || [ "${RUNPHP_XHPROF_PROFILING}" = 'true' ]; then
-  $LOUD && echo "Enabling xhprof apache config"
-  a2ensite -q 003-xhprof
+  $LOUD && echo "Enabling xhprof profile serving"
+  export RUNPHP_XHPROF_CADDY_CONFIG="handle_path /xhprof/* {
+  			root /runphp-foundation/admin/xhprof/xhprof_html
+  		}
+  "
 fi
 
 # Evaluate composer, decide what extensions are not enabled
@@ -35,7 +38,6 @@ fi
 export RUNPHP_GOOGLE_CLOUD="$(php /runphp-foundation/bin/startup-check-google-cloud.php)"
 $LOUD && echo "Google Cloud: $RUNPHP_GOOGLE_CLOUD"
 if [ "${RUNPHP_GOOGLE_CLOUD}" = 'yes' ]; then
-  export RUNPHP_APACHE_STACKDRIVER_LOGS="yes"
   export RUNPHP_TRACE_PROJECT="$(php /runphp-foundation/bin/startup-fetch-gcp-project.php)"
 fi
 

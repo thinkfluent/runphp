@@ -64,13 +64,13 @@ $arr_ext_installed_not_enabled = array_diff($arr_installed, $arr_ext_enabled);
     <header class="mb-auto"></header>
     <main class="inner text-center">
         <h1 class="display-4 mb-3">thinkfluent/runphp</h1>
-        <h3 class="display-5 mb-4">Serverless PHP Toolkit for Google Cloud Run</h3>
+        <h3 class="display-5 mb-4">Serverless FrankenPHP for Google Cloud Run</h3>
         <div class="mb-3">
             <span class="badge badge-pill badge-primary">project: <?php echo $str_project; ?></span>
             <span class="badge badge-pill badge-primary">location: <?php echo $str_running_location; ?></span>
             <span class="badge badge-pill badge-secondary">mode: <?php echo $obj_runtime->getMode(); ?></span>
-            <span class="badge badge-pill badge-secondary">foundation: <?php echo $obj_runtime->getFoundationVersion(); ?></span>
             <span class="badge badge-pill badge-secondary">runphp: <?php echo $obj_runtime->getVersion(); ?></span>
+            <span class="badge badge-pill badge-secondary">sapi: <?php echo PHP_SAPI; ?></span>
             <span class="badge badge-pill badge-secondary"><?php echo shell_exec('frankenphp -v'); ?></span>
         </div>
         <div class="row mb-3">
@@ -126,7 +126,11 @@ $arr_ext_installed_not_enabled = array_diff($arr_installed, $arr_ext_enabled);
                             <h5 class="card-title">Xdebug, Profiling</h5>
                             <p class="card-text">In dev mode, we enable Xdebug for you. Control this via the <code>RUNPHP_MODE</code> environment variable.</p>
                             <p class="card-text">Performance profiling with XHProf</p>
-                            <a class="btn btn-outline-primary" href="/xhprof">Show Profiles</a>
+                            <?php if ($obj_runtime->shouldProfile()) { ?>
+                                <a class="btn btn-outline-primary" href="/xhprof/">Show Profiles</a>
+                            <?php } else { ?>
+                                    Disabled. Enable with env: <code><?php echo Runtime::ENV_PROFILING;?>=yes</code>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -138,7 +142,7 @@ $arr_ext_installed_not_enabled = array_diff($arr_installed, $arr_ext_enabled);
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">PHP Extensions</h5>
-                            <p class="card-text">runphp comes with a bunch of common PHP extensions compiled. Some are enabled by default, and some you either have to turn on yourself - or let our Composer extension detection handle this for you.</p>
+                            <p class="card-text">runphp comes with a bunch of common PHP extensions compiled. Some (especially Google-friendly ones, like grpc and protobuf are enabled by default.</p>
                             <h6 class="card-title">Enabled</h6>
                             <p class="card-text">
                                 <code><?php echo implode(', ', $arr_ext_enabled); ?></code>
