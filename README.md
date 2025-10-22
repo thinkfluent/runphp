@@ -7,22 +7,22 @@ Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 **Debian 12 (Bookworm), Apache**
 
 | PHP Version | Images                               | PHP Status |
-|----------|---------------------------------------|------------------|
-| PHP 8.4.12 | `fluentthinking/runphp:8.4.12-v0.29.0` `latest` | Active |
-| PHP 8.3.25 | `fluentthinking/runphp:8.3.25-v0.29.0` | Active |
-| PHP 8.2.29 | `fluentthinking/runphp:8.2.29-v0.29.0` | Security only |
-| PHP 8.1.33 | `fluentthinking/runphp:8.1.33-v0.29.0` | Security only |
+|----------|--------------------------------------|------------------|
+| PHP 8.4.13 | `fluentthinking/runphp:8.4.12-v0.30.0` `latest` | Active |
+| PHP 8.3.26 | `fluentthinking/runphp:8.3.25-v0.30.0` | Active |
+| PHP 8.2.29 | `fluentthinking/runphp:8.2.29-v0.30.0` | Security only |
+| PHP 8.1.33 | `fluentthinking/runphp:8.1.33-v0.30.0` | Security only |
 
 **Debian 11 (Bullseye), Apache**
 
 | PHP Version | Images                               | PHP Status |
-|----------|---------------------------------------|------------------|
+|----------|--------------------------------------|------------------|
 | PHP 8.4.11 | `fluentthinking/runphp:8.4.11-v0.28.0` | Active |
 | PHP 8.3.24 | `fluentthinking/runphp:8.3.24-v0.28.0` | Active |
 | PHP 8.2.29 | `fluentthinking/runphp:8.2.29-v0.28.0` | Security only |
 | PHP 8.1.33 | `fluentthinking/runphp:8.1.33-v0.28.0` | Security only |
-| PHP 8.0.30 | `fluentthinking/runphp:8.0.30-v0.28.0` | EOL |
-| PHP 7.4.33 | `fluentthinking/runphp:7.4.33-v0.28.0` | EOL |
+| PHP 8.0.30 | `fluentthinking/runphp:8.0.30-v0.30.0` | EOL |
+| PHP 7.4.33 | `fluentthinking/runphp:7.4.33-v0.30.0` | EOL |
 
 **FrankenPHP**
 

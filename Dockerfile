@@ -1,6 +1,6 @@
 ARG TAG_NAME="dev-master"
 
-ARG BUILD_PHP_VER="8.4.11"
+ARG BUILD_PHP_VER="8.4.13"
 ARG BUILD_FOUNDATION_SUFFIX="v0.27.0"
 
 ################################################################################################################
@@ -30,6 +30,9 @@ ENV RUNPHP_VERSION=${TAG_NAME}
 ENV RUNPHP_PRELOAD_STRATEGY="src"
 # PHP Preloading - "include" or "compile"
 ENV RUNPHP_PRELOAD_ACTION="include"
+
+# Reduce gRPC log noise
+ENV GRPC_VERBOSITY=NONE
 
 # Setup the XHprof output dir, install additional libs
 ENV XHPROF_OUTPUT="/tmp/xhprof"
