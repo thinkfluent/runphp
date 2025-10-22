@@ -195,7 +195,7 @@ If you need to build your own base images (this repo)...
 docker build \
   --platform linux/amd64 \
   --build-arg TAG_NAME=dev \
-  --build-arg BUILD_PHP_VER=8.4.11 \
-  --build-arg BUILD_FOUNDATION_SUFFIX=v0.27.0 \
+  --build-arg BUILD_PHP_VER=8.4.13 \
+  --build-arg BUILD_FOUNDATION_SUFFIX=v0.29.0 \
   -t runphp:dev .
 ```
