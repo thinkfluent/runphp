@@ -196,6 +196,6 @@ docker build \
   --platform linux/amd64 \
   --build-arg TAG_NAME=dev \
   --build-arg BUILD_PHP_VER=8.4.15 \
-  --build-arg BUILD_FOUNDATION_SUFFIX=v0.30.0 \
+  --build-arg BUILD_FOUNDATION_SUFFIX=v0.31.0 \
   -t runphp:dev .
 ```
