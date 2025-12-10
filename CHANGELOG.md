@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.31.0] - 2025-12-10
+
+### Added
+- Bump PHP versions. 8.4.15 latest
+
+## [v0.30.0] - 2025-10-22
+
+### Added
+- Bump PHP versions. 8.4.13 latest
+
+## [v0.29.0] - 2025-09-21
+
+### Added
+- PHP & extension bumps
+- Debian 12 bump for some images
+- By default, disable rewrite for the .well-known/ subfolder
+
+## [v0.28.0] - 2025-08-25
+
+### Added
+- Bump PHP versions.
+
 ## [v0.27.0] - 2025-06-11
 
 ### Added
