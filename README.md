@@ -8,21 +8,22 @@ Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
 | PHP Version | Images                               | PHP Status |
 |----------|--------------------------------------|------------------|
-| PHP 8.4.15 | `fluentthinking/runphp:8.4.15-v0.31.0` `latest` | Active |
-| PHP 8.3.28 | `fluentthinking/runphp:8.3.28-v0.31.0` | Active |
-| PHP 8.2.29 | `fluentthinking/runphp:8.2.29-v0.31.0` | Security only |
-| PHP 8.1.33 | `fluentthinking/runphp:8.1.33-v0.31.0` | Security only |
+| PHP 8.5.1 | `fluentthinking/runphp:8.5.1-v0.32.0` `latest` | Active |
+| PHP 8.4.16 | `fluentthinking/runphp:8.4.16-v0.32.0` | Active |
+| PHP 8.3.29 | `fluentthinking/runphp:8.3.29-v0.32.0` | Security only |
+| PHP 8.2.30 | `fluentthinking/runphp:8.2.30-v0.32.0` | Security only |
+| PHP 8.1.34 | `fluentthinking/runphp:8.1.34-v0.32.0` | EOL |
 
 **Debian 11 (Bullseye), Apache**
 
 | PHP Version | Images                               | PHP Status |
-|----------|--------------------------------------|------------------|
-| PHP 8.4.11 | `fluentthinking/runphp:8.4.11-v0.28.0` | Active |
-| PHP 8.3.24 | `fluentthinking/runphp:8.3.24-v0.28.0` | Active |
-| PHP 8.2.29 | `fluentthinking/runphp:8.2.29-v0.28.0` | Security only |
-| PHP 8.1.33 | `fluentthinking/runphp:8.1.33-v0.28.0` | Security only |
-| PHP 8.0.30 | `fluentthinking/runphp:8.0.30-v0.31.0` | EOL |
-| PHP 7.4.33 | `fluentthinking/runphp:7.4.33-v0.31.0` | EOL |
+|----------|--------------------------------------|-----------------|
+| PHP 8.4.11 | `fluentthinking/runphp:8.4.11-v0.28.0` | Active (use Bookworm) |
+| PHP 8.3.24 | `fluentthinking/runphp:8.3.24-v0.28.0` | Security only (use Bookworm) |
+| PHP 8.2.29 | `fluentthinking/runphp:8.2.29-v0.28.0` | Security only (use Bookworm) |
+| PHP 8.1.33 | `fluentthinking/runphp:8.1.33-v0.28.0` | EOL |
+| PHP 8.0.30 | `fluentthinking/runphp:8.0.30-v0.32.0` | EOL (O/S, extensions only) |
+| PHP 7.4.33 | `fluentthinking/runphp:7.4.33-v0.32.0` | EOL (O/S, extensions only) |
 
 **FrankenPHP**
 
@@ -195,7 +196,7 @@ If you need to build your own base images (this repo)...
 docker build \
   --platform linux/amd64 \
   --build-arg TAG_NAME=dev \
-  --build-arg BUILD_PHP_VER=8.4.15 \
-  --build-arg BUILD_FOUNDATION_SUFFIX=v0.31.0 \
+  --build-arg BUILD_PHP_VER=8.5.1 \
+  --build-arg BUILD_FOUNDATION_SUFFIX=v0.32.0 \
   -t runphp:dev .
 ```
