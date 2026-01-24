@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.33.0] - 2026-01-24
+
+### Added
+- Bump PHP versions. 8.5.2 latest
+- igbinary extension
+
+## [v0.32.0] - 2026-01-03
+
+### Added
+- PHP 8.5 support
+
 ## [v0.31.0] - 2025-12-10
 
 ### Added
