@@ -6,13 +6,13 @@ Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
 **Debian 12 (Bookworm), Apache**
 
-| PHP Version | Images                               | PHP Status |
-|----------|--------------------------------------|------------------|
-| PHP 8.5.2 | `fluentthinking/runphp:8.5.2-v0.33.0` `latest` | Active |
-| PHP 8.4.17 | `fluentthinking/runphp:8.4.17-v0.33.0` | Active |
-| PHP 8.3.30 | `fluentthinking/runphp:8.3.30-v0.33.0` | Security only |
-| PHP 8.2.30 | `fluentthinking/runphp:8.2.30-v0.33.0` | Security only |
-| PHP 8.1.34 | `fluentthinking/runphp:8.1.34-v0.33.0` | EOL |
+| PHP Version | Images                                         | PHP Status |
+|-------------|------------------------------------------------|------------------|
+| PHP 8.5.6   | `fluentthinking/runphp:8.5.6-v0.34.1` `latest` | Active |
+| PHP 8.4.21  | `fluentthinking/runphp:8.4.21-v0.34.1`         | Active |
+| PHP 8.3.31  | `fluentthinking/runphp:8.3.31-v0.34.1`         | Security only |
+| PHP 8.2.31  | `fluentthinking/runphp:8.2.31-v0.34.1`         | Security only |
+| PHP 8.1.34  | `fluentthinking/runphp:8.1.34-v0.34.1`         | EOL |
 
 **Debian 11 (Bullseye), Apache**
 
@@ -22,8 +22,8 @@ Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 | PHP 8.3.24 | `fluentthinking/runphp:8.3.24-v0.28.0` | Security only (use Bookworm) |
 | PHP 8.2.29 | `fluentthinking/runphp:8.2.29-v0.28.0` | Security only (use Bookworm) |
 | PHP 8.1.33 | `fluentthinking/runphp:8.1.33-v0.28.0` | EOL |
-| PHP 8.0.30 | `fluentthinking/runphp:8.0.30-v0.33.0` | EOL (O/S, extensions only) |
-| PHP 7.4.33 | `fluentthinking/runphp:7.4.33-v0.33.0` | EOL (O/S, extensions only) |
+| PHP 8.0.30 | `fluentthinking/runphp:8.0.30-v0.34.1` | EOL (O/S, extensions only) |
+| PHP 7.4.33 | `fluentthinking/runphp:7.4.33-v0.34.1` | EOL (O/S, extensions only) |
 
 **FrankenPHP**
 
@@ -196,7 +196,7 @@ If you need to build your own base images (this repo)...
 docker build \
   --platform linux/amd64 \
   --build-arg TAG_NAME=dev \
-  --build-arg BUILD_PHP_VER=8.5.2 \
-  --build-arg BUILD_FOUNDATION_SUFFIX=v0.33.0 \
+  --build-arg BUILD_PHP_VER=8.5.6 \
+  --build-arg BUILD_FOUNDATION_SUFFIX=v0.34.0 \
   -t runphp:dev .
 ```
