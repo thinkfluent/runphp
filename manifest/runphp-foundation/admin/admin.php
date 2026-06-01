@@ -23,8 +23,8 @@ if ('/_runphp/opcache' === substr($_SERVER['REQUEST_URI'] ?? '', 0, 16)) {
 $obj_runtime = Runtime::get();
 if ($obj_runtime->isGoogleCloud()) {
     $obj_metadata = $obj_runtime->fetchMetadata();
-    $str_project = $obj_metadata->computeMetadata->v1->project->projectId;
-    $arr_zone_parts = explode('/', $obj_metadata->computeMetadata->v1->instance->region);
+    $str_project = $obj_metadata->project->projectId;
+    $arr_zone_parts = explode('/', $obj_metadata->instance->region);
     $str_running_location = array_pop($arr_zone_parts);
     $str_service = $obj_runtime->env()['K_SERVICE'] ?? 'unknown';
     $str_disable_gcloud = '';

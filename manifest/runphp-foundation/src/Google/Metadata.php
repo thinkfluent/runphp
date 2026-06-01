@@ -43,7 +43,7 @@ class Metadata
             return $this;
         }
         $this->str_response = (string) file_get_contents(
-            'http://' . self::METADATA_HOST . '/?recursive=true',
+            'http://' . self::METADATA_HOST . '/computeMetadata/v1/?recursive=true',
             false,
             stream_context_create([
                 'http' => [

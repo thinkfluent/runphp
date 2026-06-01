@@ -15,4 +15,4 @@ use ThinkFluent\RunPHP\Google\Metadata;
 require_once __DIR__ . '/../src/Google/Metadata.php';
 $str_metadata = (new Metadata())->fetch()->getData();
 $obj_metadata = \json_decode($str_metadata);
-echo $obj_metadata->computeMetadata->v1->project->projectId ?? 'unknown';
+echo $obj_metadata->project->projectId ?? 'unknown';

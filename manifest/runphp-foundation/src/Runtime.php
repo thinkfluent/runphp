@@ -25,6 +25,7 @@ class Runtime
         ENV_YES = 'yes';
 
     public const
+        SERVER_TRACEPARENT_HEADER = 'HTTP_TRACEPARENT',
         SERVER_TRACE_CONTEXT_HEADER = 'HTTP_X_CLOUD_TRACE_CONTEXT';
 
     /**
@@ -204,20 +205,39 @@ class Runtime
      */
     private function resolveTraceContext(): string
     {
-        if (isset($_SERVER[self::SERVER_TRACE_CONTEXT_HEADER])) {
+        $str_trace_id = null;
+        if (isset($_SERVER[self::SERVER_TRACEPARENT_HEADER])) {
+            // https://docs.cloud.google.com/trace/docs/trace-context#http-requests
+            // https://www.w3.org/TR/trace-context/#traceparent-header
+            // e.g. "HTTP_TRACEPARENT": "00-f51da32ba4a1abd182352737b3e002b6-caa39ab01e735750-01"
+            $arr_matches = [];
+            preg_match(
+                '#^[a-f0-9]{2}-(?P<trace>[a-f0-9]{32})-(?P<parent>[a-f0-9]{16})-[a-f0-9]{2}$#i',
+                $_SERVER[self::SERVER_TRACEPARENT_HEADER],
+                $arr_matches
+            );
+            $str_trace_id = $arr_matches['trace'] ?? null;
+        }
+
+        if (empty($str_trace_id) && isset($_SERVER[self::SERVER_TRACE_CONTEXT_HEADER])) {
             $arr_trace_parts = explode('/', $_SERVER[self::SERVER_TRACE_CONTEXT_HEADER]);
             $str_trace_id = $arr_trace_parts[0];
-        } else if (isset($this->arr_env[self::ENV_TRACE_HINT])) {
+        }
+
+        if (empty($str_trace_id) && isset($this->arr_env[self::ENV_TRACE_HINT])) {
             $arr_trace_parts = explode('/', $this->arr_env[self::ENV_TRACE_HINT]);
             $str_trace_id = $arr_trace_parts[0];
-        } else {
+        }
+
+        if (empty($str_trace_id)) {
             // e.g. runphp.658d63c0f16b29.71051412
             return uniqid('runphp.', true);
         }
+
         $str_project_id = $this->arr_env[self::ENV_TRACE_PROJECT] ?? '';
         if (empty($str_project_id)) {
             $obj_metadata = $this->fetchMetadata();
-            $str_project_id = $obj_metadata->computeMetadata->v1->project->projectId ?? 'unknown';
+            $str_project_id = $obj_metadata->project->projectId ?? 'unknown';
         }
         return sprintf('projects/%s/traces/%s', $str_project_id, $str_trace_id);
     }
