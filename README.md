@@ -4,15 +4,18 @@ The `thinkfluent/runphp` toolkit enables rapid application development and serve
 
 Docker images can be found here: https://hub.docker.com/r/fluentthinking/runphp
 
+**Debian 13 (Trixie), Apache**
+Coming soon...
+
 **Debian 12 (Bookworm), Apache**
 
 | PHP Version | Images                                         | PHP Status |
-|-------------|------------------------------------------------|------------------|
-| PHP 8.5.6   | `fluentthinking/runphp:8.5.6-v0.34.1` `latest` | Active |
-| PHP 8.4.21  | `fluentthinking/runphp:8.4.21-v0.34.1`         | Active |
-| PHP 8.3.31  | `fluentthinking/runphp:8.3.31-v0.34.1`         | Security only |
-| PHP 8.2.31  | `fluentthinking/runphp:8.2.31-v0.34.1`         | Security only |
-| PHP 8.1.34  | `fluentthinking/runphp:8.1.34-v0.34.1`         | EOL |
+|------------|-------------------------------------------------|------------------|
+| PHP 8.5.12 | `fluentthinking/runphp:8.5.12-v0.37.0` `latest` | Active |
+| PHP 8.4.27 | `fluentthinking/runphp:8.4.27-v0.37.0`          | Active |
+| PHP 8.3.36 | `fluentthinking/runphp:8.3.36-v0.37.0`          | Security only |
+| PHP 8.2.35 | `fluentthinking/runphp:8.2.35-v0.37.0`          | Security only |
+| PHP 8.1.34 | `fluentthinking/runphp:8.1.34-v0.34.1`          | EOL |
 
 **Debian 11 (Bullseye), Apache**
 
@@ -196,7 +199,7 @@ If you need to build your own base images (this repo)...
 docker build \
   --platform linux/amd64 \
   --build-arg TAG_NAME=dev \
-  --build-arg BUILD_PHP_VER=8.5.6 \
-  --build-arg BUILD_FOUNDATION_SUFFIX=v0.34.0 \
+  --build-arg BUILD_PHP_VER=8.5.12 \
+  --build-arg BUILD_FOUNDATION_SUFFIX=v0.37.0 \
   -t runphp:dev .
 ```

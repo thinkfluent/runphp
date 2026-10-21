@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.37.0] - 2026-10-21
+
+### Added
+- Bump PHP versions. 8.5.12 latest
+- Includes critical CVE fixes for PHP 8.5.12, 8.4.27, 8.3.36, 8.2.35
+
 ## [v0.33.0] - 2026-01-24
 
 ### Added
